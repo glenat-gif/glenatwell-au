@@ -306,7 +306,7 @@ def index_page(items, preview, fragment=False):
 </main>
 {SEARCH_JS}"""
     title = f'{SITE["site_title"]} {SITE["tagline"]}'
-    desc = (f'{SITE["councillor"]}, {SITE["ward"]}, {SITE["council"]}: video, summaries and transcripts '
+    desc = (f'{SITE["councillor"]}, {SITE["ward"]} ({SITE["suburbs"]}), {SITE["council"]}: video, summaries and transcripts '
             f'of his monthly reports to Council.')
     return page(title, desc, body, "", preview, fragment=fragment)
 

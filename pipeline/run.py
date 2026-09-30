@@ -59,13 +59,17 @@ def meeting_length(video_url):
 
 def youtube_text(report):
     """Title and description to paste into YouTube when uploading the clip."""
+    ward = f"{SITE['ward']} ({SITE['suburbs']})"
     if report.get("kind", "report") == "report":
-        title = f"Councillor Report, {long_date(report['date'])}"
-    else:
-        title = f"{report['headline']} ({report.get('label') or long_date(report['date'])})"
-    lines = [f"{title} | {SITE['councillor']}, {SITE['ward']}",
+        title = f"Councillor Report, {long_date(report['date'])} | {SITE['councillor']}, {ward}"
+    else:                                   # a motion or speech leads with its own headline
+        title = f"{report['headline']} | {SITE['councillor']}"
+    title = title[:100]                     # YouTube's limit for a title
+    lines = [title,
              "", report.get("summary", "").strip(), "",
-             f"From the {SITE['council']} meeting of {long_date(report['date'])}.",
+             (f"{report['label']}. " if report.get("label") else "")
+             + f"From the {SITE['council']} meeting of {long_date(report['date'])}.",
+             f"{SITE['councillor']}, {ward}.",
              f"Full meeting: {report['meeting_url']}"]
     if SITE.get("base_url"):
         lines.append(f"Transcript: {SITE['base_url'].rstrip('/')}/reports/{report.get('slug', report['date'])}.html")
