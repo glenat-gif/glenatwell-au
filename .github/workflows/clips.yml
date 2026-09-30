@@ -1,0 +1,33 @@
+name: Cut clips
+
+# Run by hand. Cuts the clip for one report, or for every report that has no
+# YouTube ID yet, using the clip_start and clip_end written in each report file.
+# The clips appear as a download on the run's page.
+
+on:
+  workflow_dispatch:
+    inputs:
+      which:
+        description: 'Report date such as 2026-09-28, or "all" for every report without a YouTube ID'
+        required: true
+        default: all
+
+jobs:
+  clips:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Cut
+        run: python -m pipeline.run clip "${{ inputs.which }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: clips
+          path: clips/
+          retention-days: 30

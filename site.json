@@ -1,0 +1,89 @@
+{
+  "site_title": "Glen Atwell",
+  "tagline": "Councillor Reports",
+  "councillor": "Cr Glen Atwell",
+  "ward": "Tirhatuan Ward",
+  "suburbs": "Rowville and Scoresby",
+  "council": "Knox City Council",
+  "base_url": "https://glenatwell.au",
+  "contact_email": "cr.glen.atwell@knox.vic.gov.au",
+  "accent": "orange",
+  "hero_lead": "Reporting back to",
+  "intro": "Every month in the Council chamber I report on what I have been doing across Tirhatuan Ward. Each report is here as video, a short summary and a full transcript.",
+  "about": [
+    "I live in Rowville and represent Tirhatuan Ward, which takes in Rowville and Scoresby, on Knox City Council. I served as Deputy Mayor from November 2024 to November 2025.",
+    "I am an independent. I am not a member of a political party, I do not accept campaign donations and I do not do preference deals. My focus is the local issues and services that matter to residents.",
+    "I want people to be proud of where they live. That means better access to essential services, renewing ageing infrastructure, and parks and playgrounds that stand up against any in neighbouring municipalities.",
+    "I am married with two young, sports-loving boys. In memory of our daughter Ivy, I am a passionate advocate for disability access, genuine inclusion, and practical support for people with disabilities and their carers.",
+    "I sit on the Knox Disability Advisory Committee, the Knox Community Awards Committee and the CEO Employment and Remuneration Committee, and I am Deputy Chair of Your Library.",
+    "I grew up in Doveton and Dandenong, went to public schools, and studied journalism and corporate affairs. I started out at 18 as a sports journalist on a community newspaper, and have since worked in media and communications for Victoria Police, governments and oppositions at state and federal level, and universities. I served as an independent councillor at the City of Stonnington from 2016 to 2020."
+  ],
+  "term_start": "2024-11-11",
+  "term_end": "2028-10-28",
+  "surname": "Atwell",
+  "caption_aliases": [
+    "atwell",
+    "at well",
+    "attwell",
+    "atwall",
+    "outwell",
+    "outbell",
+    "howwell",
+    "awell",
+    "arwell"
+  ],
+  "media": [
+    {
+      "outlet": "Ranges Trader Star Mail",
+      "date": "2026-06-30",
+      "title": "Rate cap squeezes Knox",
+      "url": "https://rangestrader.mailcommunity.com.au/news/2026-06-30/rate-cap-squeezes-knox/"
+    },
+    {
+      "outlet": "Drive",
+      "date": "2025-07-21",
+      "title": "One Melbourne council will enforce electric car charging etiquette with time limits and idle fees",
+      "url": "https://www.drive.com.au/news/one-melbourne-council-will-enforce-electric-car-charging-etiquette-with-time-limits-and-idle-fees/"
+    },
+    {
+      "outlet": "ABC Radio Melbourne, Drive with Warwick Long",
+      "date": "2025-07-11",
+      "title": "Knox Council introduces user charge and idle fees for electric vehicle chargers",
+      "url": "https://www.abc.net.au/listen/programs/melbourne-drive/ev-charging-fee-knox-council/105523308"
+    },
+    {
+      "outlet": "ABC Radio Melbourne, Mornings with Raf Epstein",
+      "date": "2025-05-01",
+      "title": "Knox featured on ABC Radio",
+      "url": "https://www.knox.vic.gov.au/whats-happening/news/knox-featured-abc-radio"
+    },
+    {
+      "outlet": "Ferntree Gully Star Mail",
+      "date": "2025-03-01",
+      "title": "Funding pledge for a new Knox Historical Society centre",
+      "url": "https://ferntreegully.mailcommunity.com.au/news/2025-03-01/historical-society-welcomes-liberal-pledge/"
+    },
+    {
+      "outlet": "Knox City Council news",
+      "date": "2024-11-22",
+      "title": "Glen Atwell elected Deputy Mayor of Knox",
+      "url": "https://www.knox.vic.gov.au/whats-happening/news/cr-lisa-cooper-elected-mayor"
+    }
+  ],
+  "about_photos_after": 4,
+  "about_photos": [
+    {
+      "file": "about-family.jpg",
+      "alt": "Glen Atwell with his wife and their two sons",
+      "caption": "",
+      "focus": "50% 20%"
+    },
+    {
+      "file": "about-changing-places.jpg",
+      "alt": "Glen Atwell holding his daughter Ivy outside a Changing Places facility",
+      "caption": "With Ivy.",
+      "focus": "45% 50%"
+    }
+  ],
+  "share_image": "photos/glen-square.jpg"
+}

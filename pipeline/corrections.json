@@ -1,0 +1,29 @@
+{
+  "_note": "Find-and-replace rules applied to council's auto-generated captions. Each entry is [regular expression, replacement]; matching ignores case. Add a line whenever the captions keep getting a local name wrong.",
+  "rules": [
+    ["\\b(coun[cs]e?l+ors|counselors|councilors)\\b", "Councillors"],
+    ["\\b(coun[cs]e?l+or|counselor|councilor)\\b", "Councillor"],
+    ["\\b(Roville|Rogville|Rogueville|Roseville|Roveville|rville|rogill|roel)\\b", "Rowville"],
+    ["\\b(Tahhatuan|Tahhatron|Thatchron|Tahhatch|Tahhatchuan|Tahhatchwan)\\b", "Tirhatuan"],
+    ["\\b(Lististerfield|Listister ?field|Listfield|Lista ?field|listfield)\\b", "Lysterfield"],
+    ["\\b(Danyong|Danny Nong)\\b", "Dandenong"],
+    ["\\b(Sorsby|Scoresville)\\b", "Scoresby"],
+    ["\\b(Fentry Gully|Fry Gully|fentry gully|Ferry gy|thry gly)\\b", "Ferntree Gully"],
+    ["\\b(Bonia|Bronia|Baronia)\\b", "Boronia"],
+    ["\\b(Bazewater)\\b", "Bayswater"],
+    ["\\b(Montana South|one turn south)\\b", "Wantirna South"],
+    ["\\b(KKnox|noox|KNX|Nox)\\b", "Knox"],
+    ["\\bshares? ?space\\b", "Sharespace"],
+    ["\\bstore ?h? ?holders\\b", "stallholders"],
+    ["\\bmen ?shed\\b", "Men's Shed"],
+    ["\\byour library limited\\b", "Your Library Limited"],
+    ["\\byour library\\b", "Your Library"],
+    ["\\bneighbor", "neighbour"],
+    ["\\bhonor", "honour"],
+    ["\\bcolor", "colour"],
+    ["\\btheater\\b", "theatre"],
+    ["\\bcenter\\b", "centre"],
+    ["\\brecogni(z)(e|ed|es|ing)\\b", "recognis$2"],
+    ["\\borgani(z)(e|ed|es|ing|ation|ations|er|ers)\\b", "organis$2"]
+  ]
+}
