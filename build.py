@@ -111,6 +111,8 @@ def page(title, description, body, root, preview, path="", fragment=False):
 
 def nav(root):
     media = f'<li><a href="{root}index.html#media">Media</a></li>' if SITE.get("media") else ""
+    if SITE.get("facebook"):
+        media += f'<li><a href="{root}index.html#facebook">Facebook</a></li>'
     return f"""<nav class="nav">
 <a class="wordmark" href="{root}index.html">{e(SITE["site_title"])}</a>
 <ul><li><a href="{root}index.html#reports">Reports</a></li>{media}<li><a href="{root}index.html#about">About</a></li></ul>
@@ -330,6 +332,8 @@ def index_page(items, preview, fragment=False):
 <p><a class="button" href="{fb}" rel="noopener">Follow on Facebook</a></p></div>
 <div class="fb-box" id="fb-box" data-page="{fb}" data-title="{e(SITE["councillor"])} on Facebook"><a href="{fb}" rel="noopener">See the latest posts on Facebook</a></div>
 </section>"""
+    # News coverage and Facebook sit side by side on a wide screen when both are present.
+    duo = f'<div class="duo">\n{media}\n{social}\n</div>' if media and social else media + social
     about = SITE["about"] if isinstance(SITE["about"], list) else [SITE["about"]]
     feature = feature_block(featured, preview) if featured else ""
     figures = "".join(
@@ -364,8 +368,7 @@ def index_page(items, preview, fragment=False):
 {groups}
 <p class="empty" id="q-empty" hidden>No report mentions that yet.</p>
 </section>
-{media}
-{social}
+{duo}
 <section class="about" id="about">
 <div><h2>About</h2></div>
 <div class="about-text">{about_html}</div>
@@ -374,7 +377,7 @@ def index_page(items, preview, fragment=False):
 {SEARCH_JS}
 {SLIDES_JS if len(slides) > 1 else ""}
 {FACEBOOK_JS if social else ""}"""
-    title = f'{SITE["site_title"]} {SITE["tagline"]}'
+    title = SITE.get("page_title") or f'{SITE["site_title"]} {SITE["tagline"]}'
     desc = (f'{SITE["councillor"]}, {SITE["ward"]} ({SITE["suburbs"]}), {SITE["council"]}: video, summaries and transcripts '
             f'of his monthly reports to Council.')
     return page(title, desc, body, "", preview, fragment=fragment)

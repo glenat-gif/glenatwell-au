@@ -49,6 +49,7 @@ Everything about the look is in `static/style.css`. The words on the home page a
 
 | Setting | What it changes |
 | --- | --- |
+| `page_title` | The home page title shown in the browser tab and in Google results (keep it under 60 characters) |
 | `hero_lead`, `suburbs` | The headline: "Reporting back to" + "Rowville and Scoresby." |
 | `intro` | The paragraph under the headline |
 | `about` | The About section |
