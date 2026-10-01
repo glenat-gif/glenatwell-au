@@ -13,8 +13,9 @@
       "anti-?social"
     ],
     "skip": [
-      "fire crews",
-      "community safety initiative"
+      "ERG meeting",
+      "community safety initiative",
+      "fire crews"
     ]
   },
   {
@@ -29,16 +30,22 @@
       "traffic and parking",
       "street sweep",
       "VicRoads"
+    ],
+    "skip": [
+      "\\bbark\\b"
     ]
   },
   {
     "slug": "street-trees",
-    "title": "Street trees",
-    "intro": "Street trees, bark shedding and the tree canopy across Knox.",
+    "title": "Street trees and tree planting",
+    "intro": "Street trees, bark shedding and tree planting across Knox.",
     "match": [
       "\\btrees?\\b",
       "\\bbark\\b",
       "tree cover"
+    ],
+    "skip": [
+      "drop-in session"
     ]
   },
   {
@@ -68,8 +75,8 @@
       "accessibility",
       "all abilities",
       "KDAC",
-      "Auslan",
-      "access and inclusion"
+      "access and inclusion",
+      "Stud Park playground"
     ]
   },
   {
@@ -87,7 +94,8 @@
     "match": [
       "Share Space",
       "Makers and Bakers",
-      "\\bmarkets?\\b"
+      "\\bmarkets?\\b",
+      "Sundaez N Chill"
     ]
   },
   {
@@ -127,6 +135,11 @@
       "young leaders",
       "\\bScouts\\b",
       "Scout Group"
+    ],
+    "skip": [
+      "Men's Shed",
+      "National Tree Day",
+      "Wellington Village"
     ]
   },
   {
@@ -138,6 +151,10 @@
       "fire brigade",
       "firefighter",
       "Santa run"
+    ],
+    "skip": [
+      "Wellington Village",
+      "community market put on by Share Space"
     ]
   },
   {
@@ -161,7 +178,8 @@
     "match": [
       "citizenship",
       "Australia Day",
-      "citizens\\b"
+      "citizens\\b",
+      "the ceremony here yesterday"
     ],
     "skip": [
       "yarning circle"
@@ -182,7 +200,8 @@
       "Life Activities",
       "volunteering",
       "formally volunteer",
-      "Historical Society"
+      "Historical Society",
+      "every recipient"
     ]
   },
   {
@@ -197,7 +216,7 @@
       "\\bproduction\\b",
       "Pets in the Park",
       "Anzac",
-      "Knox Factor"
+      "Wellington Village"
     ]
   }
 ]
