@@ -142,11 +142,12 @@ def page(title, description, body, root, preview, path="", fragment=False):
 
 def nav(root):
     media = f'<li><a href="{root}index.html#media">Media</a></li>' if SITE.get("media") else ""
+    issues = f'<li><a href="{root}index.html#issues">Issues</a></li>' if (ROOT / "issues.json").exists() else ""
     if SITE.get("facebook"):
         media += f'<li><a href="{root}index.html#facebook">Facebook</a></li>'
     return f"""<nav class="nav">
 <a class="wordmark" href="{root}index.html">{e(SITE["site_title"])}</a>
-<ul><li><a href="{root}index.html#reports">Reports</a></li>{media}<li><a href="{root}index.html#about">About</a></li></ul>
+<ul><li><a href="{root}index.html#reports">Reports</a></li>{issues}{media}<li><a href="{root}index.html#about">About</a></li></ul>
 </nav>"""
 
 
@@ -325,7 +326,85 @@ def hero_slides(slides):
             f'<figcaption><span class="slide-note">{e(slides[0].get("caption", ""))}</span>{dots}</figcaption></figure>')
 
 
-def index_page(items, preview, fragment=False):
+def load_issues(items):
+    """Sort what was said into issues, using the rules in issues.json.
+
+    A report joins an issue when a paragraph of its transcript matches one of the issue's `match` patterns
+    (and none of its `skip` patterns). A motion joins the issues named on its `issues` line, and is pinned first.
+    """
+    path = ROOT / "issues.json"
+    if not path.exists():
+        return []
+    out = []
+    for rule in json.loads(path.read_text(encoding="utf-8")):
+        want = re.compile("|".join(rule["match"]), re.I)
+        skip = re.compile("|".join(rule["skip"]), re.I) if rule.get("skip") else None
+        pinned, entries = [], []
+        for r in items:
+            if rule["slug"] in r["issues"]:
+                pinned.append(r)
+            elif r["kind"] == "report":
+                paras = [para.strip() for para in r["transcript"].split("\n\n")
+                         if want.search(para) and not (skip and skip.search(para))]
+                if paras:
+                    entries.append((r, paras))
+        if pinned or entries:
+            out.append({"slug": rule["slug"], "title": rule["title"], "intro": rule.get("intro", ""),
+                        "pinned": pinned, "entries": entries, "count": len(pinned) + len(entries)})
+    return out
+
+
+def times(n, word):
+    return f"{n} {word}" if n == 1 else f"{n} {word}s"
+
+
+def issue_page(issue, issues, preview):
+    def flag(r):
+        return '<span class="draft-flag">Draft</span> ' if preview and r["status"] != "published" else ""
+    blocks = []
+    for r in issue["pinned"]:
+        outcome = f' · {e(r["outcome"])}' if r["outcome"] else ""
+        blocks.append(f"""<article class="issue-entry pinned">
+<p class="mono">{flag(r)}{e(r["label"] or "Speech")} · {long_date(r["date"])}{outcome}</p>
+<h2><a href="../reports/{r["slug"]}.html">{e(r["headline"])}</a></h2>
+<div class="prose">{paragraphs(r["summary"].split(chr(10) + chr(10))[0])}</div>
+<p><a class="button" href="../reports/{r["slug"]}.html">Watch the speech · {timecode(seconds_of(r))}</a></p>
+</article>""")
+    for r, paras in issue["entries"]:
+        blocks.append(f"""<article class="issue-entry">
+<p class="mono">{flag(r)}{long_date(r["date"])}</p>
+<div class="prose">{paragraphs((chr(10) + chr(10)).join(paras))}</div>
+<p class="issue-more"><a href="../reports/{r["slug"]}.html">Watch this report · {timecode(seconds_of(r))}</a></p>
+</article>""")
+    dates = [r["date"] for r in issue["pinned"]] + [r["date"] for r, _ in issue["entries"]]
+    parts = []
+    if issue["entries"]:
+        parts.append(times(len(issue["entries"]), "report"))
+    if issue["pinned"]:
+        parts.append(times(len(issue["pinned"]), "motion"))
+    others = "".join(f'<li><a href="{i["slug"]}.html">{e(i["title"])}</a></li>' for i in issues if i is not issue)
+    body = f"""<div class="band"><div class="wrap">
+{nav("../")}
+<div class="report-head">
+<a class="back" href="../index.html#issues">All issues</a>
+<p class="eyebrow">Issue</p>
+<h1>{e(issue["title"])}</h1>
+<p class="mono">Raised in {" and ".join(parts)} · most recently {long_date(max(dates))}</p>
+</div>
+</div></div>
+<main class="wrap issue-body">
+<p class="issue-intro">{e(issue["intro"])} What follows is what I’ve said in the Council chamber.</p>
+<div class="issue-list">
+{chr(10).join(blocks)}
+</div>
+<section class="issue-others"><p class="eyebrow">Other issues</p><ul class="chips">{others}</ul></section>
+</main>"""
+    title = f'{issue["title"]} | {SITE["site_title"]}'
+    desc = f'{SITE["councillor"]} on {issue["title"].lower()}: what he has said in the Council chamber, with video.'
+    return page(title, desc, body, "../", preview, path=f"issues/{issue['slug']}.html")
+
+
+def index_page(items, preview, fragment=False, issues=()):
     reports = [r for r in items if r["kind"] == "report"] or items
     featured = [r for r in items if r["featured"]][:2]      # one is shown wide, two sit side by side
     latest = reports[0]
@@ -338,16 +417,24 @@ def index_page(items, preview, fragment=False):
         + "\n</div></section>" for year in years)
     slides = [ph for ph in SITE.get("hero_photos", []) if (ROOT / "static" / "photos" / ph["file"]).exists()]
     has_portrait = bool(slides) or PHOTO.exists()
-    if slides:
-        side = hero_slides(slides)
-    elif PHOTO.exists():
-        side = '<figure class="portrait"><img src="glen.jpg" alt="Glen Atwell" width="800" height="1201"></figure>'
-    else:
-        side = f"""<a class="latest" href="reports/{latest['slug']}.html">
+    face = ""
+    latest_card = f"""<a class="latest" href="reports/{latest['slug']}.html">
 {poster(latest, preview)}
 <span class="latest-text"><span class="eyebrow">Latest report · {long_date(latest['date'])}</span>
 <h2>{e(latest['headline'])}</h2></span>
 </a>"""
+    if SITE.get("hero_style") == "latest":       # the newest report takes the right-hand side; one photo sits with the headline
+        side, has_portrait = latest_card, False
+        if slides:
+            face = (f'<img class="hero-face" src="photos/{e(slides[0]["file"])}" alt="{e(SITE["councillor"])}" '
+                    'width="960" height="1200">')
+        slides = []
+    elif slides:
+        side = hero_slides(slides)
+    elif PHOTO.exists():
+        side = '<figure class="portrait"><img src="glen.jpg" alt="Glen Atwell" width="800" height="1201"></figure>'
+    else:
+        side = latest_card
     media = ""
     if SITE.get("media"):
         rows = "".join(
@@ -369,6 +456,12 @@ def index_page(items, preview, fragment=False):
         feature = '<div class="features">\n' + "\n".join(feature_block(r, preview, paras=1) for r in featured) + "\n</div>"
     else:
         feature = feature_block(featured[0], preview) if featured else ""
+    issue_row = ""
+    if issues:
+        links = "".join(f'<li><a href="issues/{i["slug"]}.html"><b>{e(i["title"])}</b>'
+                        f'<span class="mono">{times(i["count"], "time")}</span></a></li>' for i in issues)
+        issue_row = (f'<section class="issues" id="issues"><div class="section-head"><h2>Issues</h2></div>'
+                     f'<ul class="issue-grid">{links}</ul></section>')
     figures = "".join(
         f'<figure><img src="photos/{e(ph["file"])}" alt="{e(ph["alt"])}" loading="lazy"'
         + (f' style="object-position:{e(ph["focus"])}"' if ph.get("focus") else "") + ">"
@@ -382,7 +475,7 @@ def index_page(items, preview, fragment=False):
 {nav("")}
 <div class="hero{' has-portrait' if has_portrait else ''}">
 <div class="hero-text">
-<p class="eyebrow">{e(SITE["ward"])} · {e(SITE["council"])}</p>
+{f'<div class="hero-id">{face}<p><b>{e(SITE["councillor"])}</b><span class="eyebrow">{e(SITE["ward"])} · {e(SITE["council"])}</span></p></div>' if face else f'<p class="eyebrow">{e(SITE["ward"])} · {e(SITE["council"])}</p>'}
 <h1>{e(SITE["hero_lead"])} <em>{e(SITE["suburbs"])}.</em></h1>
 <p class="lede">{e(SITE["intro"])}</p>
 <p class="stats mono"><span><b>{len(reports)}</b> monthly reports</span><span><b>{minutes}</b> minutes of video</span><span>since <b>{first:%B %Y}</b></span></p>
@@ -393,6 +486,7 @@ def index_page(items, preview, fragment=False):
 </div></div>
 <main class="wrap">
 {feature}
+{issue_row}
 <section class="reports" id="reports">
 <div class="section-head">
 <h2>Reports and motions</h2>
@@ -416,7 +510,12 @@ def index_page(items, preview, fragment=False):
     return page(title, desc, body, "", preview, fragment=fragment)
 
 
-def report_page(report, newer, older, preview):
+def report_page(report, newer, older, preview, issues=()):
+    mine = [i for i in issues if report in i["pinned"] or any(r is report for r, _ in i["entries"])]
+    issue_links = ""
+    if mine:
+        issue_links = ('<div><p class="eyebrow">Issues</p><ul class="chips">'
+                       + "".join(f'<li><a href="../issues/{i["slug"]}.html">{e(i["title"])}</a></li>' for i in mine) + "</ul></div>")
     if report["youtube"]:
         video = (f'<iframe class="video" src="https://www.youtube-nocookie.com/embed/{e(report["youtube"])}" '
                  f'title="{e(report["headline"])}" loading="lazy" allowfullscreen '
@@ -488,6 +587,7 @@ def report_page(report, newer, older, preview):
 </div>
 <aside class="facts">
 <div><p class="eyebrow">In this report</p><ul class="chips">{chips}</ul></div>
+{issue_links}
 <dl>
 <div><dt>Meeting</dt><dd>{long_date(report['date'])}</dd></div>
 <div><dt>Length</dt><dd>{duration(report)}</dd></div>
@@ -547,9 +647,14 @@ def main(argv=None):
         (out / "index.html").write_text(page(SITE["site_title"], SITE["intro"], body, "", False), encoding="utf-8")
         print("Built an empty site: no published reports yet.")
         return
-    (out / "index.html").write_text(index_page(reports, args.drafts), encoding="utf-8")
+    issues = load_issues(reports)
+    (out / "index.html").write_text(index_page(reports, args.drafts, issues=issues), encoding="utf-8")
     if args.drafts:
-        (out / "preview.html").write_text(index_page(reports, True, fragment=True), encoding="utf-8")
+        (out / "preview.html").write_text(index_page(reports, True, fragment=True, issues=issues), encoding="utf-8")
+    if issues:
+        (out / "issues").mkdir()
+        for issue in issues:
+            (out / "issues" / f"{issue['slug']}.html").write_text(issue_page(issue, issues, args.drafts), encoding="utf-8")
     (out / "search.json").write_text(
         json.dumps([{"d": r["slug"], "t": " ".join(r["transcript"].lower().split())} for r in reports]),
         encoding="utf-8")
@@ -557,7 +662,7 @@ def main(argv=None):
         newer = reports[i - 1] if i > 0 else None
         older = reports[i + 1] if i + 1 < len(reports) else None
         (out / "reports" / f"{report['slug']}.html").write_text(
-            report_page(report, newer, older, args.drafts), encoding="utf-8")
+            report_page(report, newer, older, args.drafts, issues), encoding="utf-8")
     if SITE.get("base_url") and not args.drafts:
         (out / "feed.xml").write_text(feed(reports), encoding="utf-8")
     print(f"Built {len(reports)} report pages in {out.relative_to(ROOT)}/")

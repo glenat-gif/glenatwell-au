@@ -21,11 +21,11 @@ import re
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 REPORTS = ROOT / "content" / "reports"
-FIELDS = ["date", "status", "youtube", "headline", "video_title", "kind", "label", "item", "outcome", "featured",
+FIELDS = ["date", "status", "youtube", "headline", "video_title", "kind", "label", "item", "outcome", "featured", "issues",
           "summary_label", "image", "image_focus", "image_caption", "gallery", "role", "meeting_url", "video_url",
           "clip_start", "clip_end", "meeting_length", "timing", "topics", "check"]
-LISTS = {"topics", "check", "gallery"}
-OPTIONAL = {"video_title", "kind", "label", "item", "outcome", "featured", "summary_label", "image", "image_focus", "image_caption", "gallery"}   # left out of the file when empty
+LISTS = {"topics", "check", "gallery", "issues"}
+OPTIONAL = {"video_title", "issues", "kind", "label", "item", "outcome", "featured", "summary_label", "image", "image_focus", "image_caption", "gallery"}   # left out of the file when empty
 
 
 def read_report(path):

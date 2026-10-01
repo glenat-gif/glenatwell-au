@@ -107,6 +107,22 @@ class ReportFiles(unittest.TestCase):
                          "Stud Road phone tower and The Dizzy Rooster | Cr Glen Atwell, Rowville and Scoresby, 28 Sep 2026")
 
 
+class Issues(unittest.TestCase):
+    def test_issue_rules_compile_and_find_something(self):
+        rules = json.loads((ROOT / "issues.json").read_text(encoding="utf-8"))
+        slugs = [r["slug"] for r in rules]
+        self.assertEqual(len(slugs), len(set(slugs)))
+        text = " ".join(r["transcript"] for r in content.all_reports())
+        for rule in rules:
+            self.assertRegex(rule["slug"], r"^[a-z0-9-]+$")
+            self.assertTrue(re.search("|".join(rule["match"]), text, re.I), rule["slug"])
+            if rule.get("skip"):
+                re.compile("|".join(rule["skip"]))
+        for r in content.all_reports():
+            for slug in r["issues"]:
+                self.assertIn(slug, slugs, r["slug"])
+
+
 class CheckCommand(unittest.TestCase):
     def test_check_drafts_new_report_and_records_the_rest(self):
         pages = {"archive.php": (FIX / "archive.html").read_text(),

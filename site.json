@@ -77,13 +77,25 @@
       "file": "about-family.jpg",
       "alt": "Glen Atwell with his wife and their two sons",
       "caption": "",
-      "focus": "50% 20%"
+      "focus": "50% 38%"
     },
     {
       "file": "about-changing-places.jpg",
       "alt": "Glen Atwell holding his daughter Ivy outside a Changing Places facility",
-      "caption": "With Ivy.",
+      "caption": "With dear Ivy. We miss you every day.",
       "focus": "45% 50%"
+    },
+    {
+      "file": "hero-cfa.jpg",
+      "alt": "Glen Atwell and his two sons beside the CFA koala mascot",
+      "caption": "With the boys at the Scoresby CFA open day.",
+      "focus": "50% 30%"
+    },
+    {
+      "file": "hero-foyer.jpg",
+      "alt": "Glen Atwell and his son Austin with cans of soft drink in the council foyer",
+      "caption": "The 2025 mayoral election with Austin, who only comes for the soft drink.",
+      "focus": "50% 25%"
     }
   ],
   "share_image": "photos/glen-square.jpg",
@@ -115,5 +127,6 @@
     }
   ],
   "facebook": "https://www.facebook.com/crglenatwell",
-  "facebook_note": "Updates from around Rowville and Scoresby between Council meetings."
+  "facebook_note": "Updates from around Rowville and Scoresby between Council meetings.",
+  "hero_style": "latest"
 }

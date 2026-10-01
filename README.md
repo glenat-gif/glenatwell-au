@@ -58,7 +58,7 @@ Everything about the look is in `static/style.css`. The words on the home page a
 | `term_start`, `term_end` | The two ends of the term timeline |
 | `contact_email` | Shown in the footer when filled in |
 
-The photos at the top of the home page are listed under `hero_photos` in `site.json`, and the files live in `static/photos`. Each one is an upright 4:5 photo (960 by 1200 works well) with an optional `caption`. With more than one, they change every six seconds, and a visitor can click the dots or the photo to move on. The first in the list is the one people see first. If `hero_photos` is empty, the site falls back to the single portrait `static/glen.jpg`.
+With `hero_style` set to `latest` in `site.json`, the top of the home page shows the newest report on the right and the first of the `hero_photos` as a small portrait beside your name. Remove `hero_style` to go back to the photo gallery. The photos at the top of the home page are listed under `hero_photos` in `site.json`, and the files live in `static/photos`. Each one is an upright 4:5 photo (960 by 1200 works well) with an optional `caption`. With more than one, they change every six seconds, and a visitor can click the dots or the photo to move on. The first in the list is the one people see first. If `hero_photos` is empty, the site falls back to the single portrait `static/glen.jpg`.
 
 Other photos live in `static/photos/`:
 
@@ -68,6 +68,10 @@ Other photos live in `static/photos/`:
 - **Link previews:** `share_image` in `site.json` is the picture shown when the site is shared on social media.
 
 The "In the media" list is the `media` section of `site.json`: outlet, date, title and link for each item.
+
+## Issues
+
+`issues.json` sorts what was said into issues, each with its own page under `issues/`. For each issue it holds a `title`, a one-line `intro`, and `match`: words or names to look for (regular expressions, ignoring case). A paragraph of a report's transcript is filed under an issue when it matches, unless it also matches one of the issue's `skip` patterns. New reports sort themselves. To change what an issue picks up, edit its `match` or `skip` list. A motion is pinned to the top of an issue by naming the issue on an `issues:` line in its file, for example `issues: community-safety`. Delete `issues.json` to remove the issue pages altogether.
 
 ## Motions and other speeches
 

@@ -1,0 +1,203 @@
+[
+  {
+    "slug": "community-safety",
+    "title": "Community safety and crime",
+    "intro": "Crime, policing and how safe people feel in Rowville and Scoresby.",
+    "match": [
+      "\\bcrime\\b",
+      "Crime Stoppers",
+      "\\bpolice\\b(?! Road)",
+      "community safety",
+      "Local Safety Committee",
+      "Coffee with a Cop",
+      "anti-?social"
+    ],
+    "skip": [
+      "fire crews",
+      "community safety initiative"
+    ]
+  },
+  {
+    "slug": "roads-and-footpaths",
+    "title": "Roads, potholes and footpaths",
+    "intro": "The state of our roads and footpaths, and traffic around schools and shops.",
+    "match": [
+      "pothole",
+      "arterial",
+      "\\bmedians?\\b",
+      "footpath",
+      "traffic and parking",
+      "street sweep",
+      "VicRoads"
+    ]
+  },
+  {
+    "slug": "street-trees",
+    "title": "Street trees",
+    "intro": "Street trees, bark shedding and the tree canopy across Knox.",
+    "match": [
+      "\\btrees?\\b",
+      "\\bbark\\b",
+      "tree cover"
+    ]
+  },
+  {
+    "slug": "planning",
+    "title": "Planning and development",
+    "intro": "Planning applications and development proposals in the ward.",
+    "match": [
+      "planning application",
+      "planning consultative",
+      "Grayson Drive",
+      "Murray Crescent",
+      "telecommunications tower",
+      "Dizzy Rooster",
+      "parklet",
+      "outdoor dining"
+    ]
+  },
+  {
+    "slug": "disability-access",
+    "title": "Disability access and inclusion",
+    "intro": "Access, inclusion and practical support for people with disabilities and their carers.",
+    "match": [
+      "disabilit",
+      "accessible playground",
+      "accessible bathroom",
+      "accessible options",
+      "accessibility",
+      "all abilities",
+      "KDAC",
+      "Auslan",
+      "access and inclusion"
+    ]
+  },
+  {
+    "slug": "your-library",
+    "title": "Your Library",
+    "intro": "Rowville Library and my work on the Your Library board.",
+    "match": [
+      "librar"
+    ]
+  },
+  {
+    "slug": "markets",
+    "title": "Share Space and local markets",
+    "intro": "Share Space, the Makers and Bakers Market and other community markets.",
+    "match": [
+      "Share Space",
+      "Makers and Bakers",
+      "\\bmarkets?\\b"
+    ]
+  },
+  {
+    "slug": "local-sport",
+    "title": "Local sport",
+    "intro": "The clubs, grounds and volunteers behind community sport.",
+    "match": [
+      "football",
+      "cricket",
+      "basketball",
+      "netball",
+      "soccer",
+      "baseball",
+      "tennis",
+      "\\bBMX\\b",
+      "Raiders",
+      "Rockets",
+      "Hawks",
+      "Sport and Leisure",
+      "Swimland",
+      "athletics"
+    ],
+    "skip": [
+      "special honours",
+      "Bubbles @"
+    ]
+  },
+  {
+    "slug": "schools",
+    "title": "Schools and young people",
+    "intro": "Our schools, scouts and the young people of the ward.",
+    "match": [
+      "Primary School",
+      "Secondary College",
+      "\\bschools?\\b",
+      "students",
+      "young leaders",
+      "\\bScouts\\b",
+      "Scout Group"
+    ]
+  },
+  {
+    "slug": "emergency-services",
+    "title": "CFA and emergency services",
+    "intro": "Our volunteer fire brigades and emergency services.",
+    "match": [
+      "\\bCFA\\b",
+      "fire brigade",
+      "firefighter",
+      "Santa run"
+    ]
+  },
+  {
+    "slug": "budget",
+    "title": "Budget and Council plan",
+    "intro": "Council's budget, annual plan and what residents told us they want.",
+    "match": [
+      "budget",
+      "Council plan",
+      "annual plan",
+      "community panel"
+    ],
+    "skip": [
+      "Your Library"
+    ]
+  },
+  {
+    "slug": "citizenship",
+    "title": "Citizenship and Australia Day",
+    "intro": "Citizenship ceremonies and how Knox marks Australia Day.",
+    "match": [
+      "citizenship",
+      "Australia Day",
+      "citizens\\b"
+    ],
+    "skip": [
+      "yarning circle"
+    ]
+  },
+  {
+    "slug": "community-groups",
+    "title": "Community groups and volunteers",
+    "intro": "The groups and volunteers who hold the community together.",
+    "match": [
+      "Community Awards",
+      "Local Heroes",
+      "Men's Shed",
+      "Repair Cafe",
+      "Foodshare",
+      "food relief",
+      "Community Care",
+      "Life Activities",
+      "volunteering",
+      "formally volunteer",
+      "Historical Society"
+    ]
+  },
+  {
+    "slug": "arts-and-events",
+    "title": "Arts, culture and events",
+    "intro": "Knox Carols, school productions and the events that bring people together.",
+    "match": [
+      "Carols",
+      "Knox Fest",
+      "Halloween",
+      "arts and culture",
+      "\\bproduction\\b",
+      "Pets in the Park",
+      "Anzac",
+      "Knox Factor"
+    ]
+  }
+]
