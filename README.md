@@ -56,7 +56,7 @@ Everything about the look is in `static/style.css`. The words on the home page a
 | `term_start`, `term_end` | The two ends of the term timeline |
 | `contact_email` | Shown in the footer when filled in |
 
-The portrait at the top of the home page is `static/glen.jpg`. Replace that file to change it (a 4:5 upright photo works best).
+The photos at the top of the home page are listed under `hero_photos` in `site.json`, and the files live in `static/photos`. Each one is an upright 4:5 photo (960 by 1200 works well) with an optional `caption`. With more than one, they change every six seconds, and a visitor can click the dots or the photo to move on. The first in the list is the one people see first. If `hero_photos` is empty, the site falls back to the single portrait `static/glen.jpg`.
 
 Other photos live in `static/photos/`:
 

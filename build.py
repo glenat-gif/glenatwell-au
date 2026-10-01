@@ -85,28 +85,6 @@ def page(title, description, body, root, preview, path="", fragment=False):
     notice = ('<div class="notice"><div class="wrap">Preview. This build includes drafts that are not public yet.'
               "</div></div>") if preview else ""
     contact = f'<p>Contact: {e(SITE["contact_email"])}</p>' if SITE.get("contact_email") else ""
-    swatches = ""
-    if preview:
-        buttons = "".join(f'<button type="button" data-accent="{name}" style="background:{fill}" '
-                          f'aria-label="{name.title()} accent" aria-pressed="false"></button>'
-                          for name, (fill, _) in ACCENTS.items())
-        swatches = f"""<div class="swatches" id="swatches">Accent {buttons}</div>
-<script>
-(function () {{
-  var accents = {json.dumps(ACCENTS)}, start = {json.dumps(SITE.get("accent", "orange"))};
-  var buttons = [].slice.call(document.querySelectorAll('#swatches button'));
-  function set(name) {{
-    var a = accents[name]; if (!a) return;
-    document.documentElement.style.setProperty('--accent', a[0]);
-    document.documentElement.style.setProperty('--on-accent', a[1]);
-    buttons.forEach(function (b) {{ b.setAttribute('aria-pressed', String(b.dataset.accent === name)); }});
-    try {{ localStorage.setItem('accent', name); }} catch (err) {{}}
-  }}
-  var saved = null; try {{ saved = localStorage.getItem('accent'); }} catch (err) {{}}
-  set(accents[saved] ? saved : start);
-  buttons.forEach(function (b) {{ b.addEventListener('click', function () {{ set(b.dataset.accent); }}); }});
-}})();
-</script>"""
     inner = f"""{notice}
 {body}
 <footer><div class="wrap">
@@ -114,8 +92,7 @@ def page(title, description, body, root, preview, path="", fragment=False):
 <p>This is {e(SITE["councillor"])}'s own website. It is not a {e(SITE["council"])} website, and the views expressed are his own.</p>
 <p>Video and captions come from {e(SITE["council"])}'s public meeting webcast. Transcripts are edited from the auto-generated captions and may contain errors. The video is the record.</p>
 {contact}
-</div></footer>
-{swatches}"""
+</div></footer>"""
     if fragment:                      # for a preview host that supplies its own <html> wrapper
         return head + "\n" + inner + "\n"
     return f"""<!doctype html>
@@ -239,6 +216,59 @@ def feature_block(item, preview):
 </section>"""
 
 
+SLIDES_JS = """<script>
+(function () {
+  var box = document.getElementById('slides'); if (!box) return;
+  var imgs = [].slice.call(box.querySelectorAll('.frame img'));
+  var dots = [].slice.call(box.querySelectorAll('.dots button'));
+  var note = box.querySelector('.slide-note');
+  var at = 0, timer = null, held = false;
+  var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function show(n) {
+    at = (n + imgs.length) % imgs.length;
+    imgs.forEach(function (img, i) { img.classList.toggle('on', i === at); });
+    dots.forEach(function (d, i) { d.setAttribute('aria-current', String(i === at)); });
+    note.textContent = imgs[at].dataset.caption || '';
+  }
+  function play() {
+    clearInterval(timer);
+    if (!still && !held && !document.hidden) timer = setInterval(function () { show(at + 1); }, 6000);
+  }
+  dots.forEach(function (d, i) { d.addEventListener('click', function () { show(i); play(); }); });
+  var frame = box.querySelector('.frame'), x0 = null;
+  frame.addEventListener('click', function () { show(at + 1); play(); });
+  frame.addEventListener('touchstart', function (ev) { x0 = ev.touches[0].clientX; }, { passive: true });
+  frame.addEventListener('touchend', function (ev) {
+    if (x0 === null) return;
+    var dx = ev.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) { ev.preventDefault(); show(at + (dx < 0 ? 1 : -1)); play(); }
+  });
+  ['mouseenter', 'focusin'].forEach(function (n) { box.addEventListener(n, function () { held = true; play(); }); });
+  ['mouseleave', 'focusout'].forEach(function (n) { box.addEventListener(n, function () { held = false; play(); }); });
+  document.addEventListener('visibilitychange', play);
+  play();
+})();
+</script>"""
+
+
+def hero_slides(slides):
+    """The photo frame at the top of the home page: one photo, or a few that change every six seconds."""
+    imgs = "".join(
+        ('<img class="on"' if i == 0 else "<img")
+        + f' src="photos/{e(ph["file"])}" alt="{e(ph.get("alt") or "Glen Atwell")}" '
+        f'width="960" height="1200" data-caption="{e(ph.get("caption", ""))}"'
+        + (f' style="object-position:{e(ph["focus"])}"' if ph.get("focus") else "")
+        + ("" if i == 0 else ' loading="lazy"') + ">"
+        for i, ph in enumerate(slides))
+    dots = ""
+    if len(slides) > 1:
+        dots = '<span class="dots">' + "".join(
+            f'<button type="button" aria-label="Photo {i + 1} of {len(slides)}" aria-current="{str(i == 0).lower()}"></button>'
+            for i in range(len(slides))) + "</span>"
+    return (f'<figure class="portrait slides" id="slides"><div class="frame">{imgs}</div>'
+            f'<figcaption><span class="slide-note">{e(slides[0].get("caption", ""))}</span>{dots}</figcaption></figure>')
+
+
 def index_page(items, preview, fragment=False):
     reports = [r for r in items if r["kind"] == "report"] or items
     featured = next((r for r in items if r["featured"]), None)
@@ -250,7 +280,11 @@ def index_page(items, preview, fragment=False):
         f'<section class="year"><h3>{year}</h3>\n<div class="grid">\n'
         + "\n".join(card(r, preview) for r in items if r["date"].startswith(year))
         + "\n</div></section>" for year in years)
-    if PHOTO.exists():
+    slides = [ph for ph in SITE.get("hero_photos", []) if (ROOT / "static" / "photos" / ph["file"]).exists()]
+    has_portrait = bool(slides) or PHOTO.exists()
+    if slides:
+        side = hero_slides(slides)
+    elif PHOTO.exists():
         side = '<figure class="portrait"><img src="glen.jpg" alt="Glen Atwell" width="800" height="1201"></figure>'
     else:
         side = f"""<a class="latest" href="reports/{latest['slug']}.html">
@@ -277,7 +311,7 @@ def index_page(items, preview, fragment=False):
                   + "".join(f"<p>{e(par)}</p>" for par in about[cut:]))
     body = f"""<div class="band"><div class="wrap">
 {nav("")}
-<div class="hero{' has-portrait' if PHOTO.exists() else ''}">
+<div class="hero{' has-portrait' if has_portrait else ''}">
 <div class="hero-text">
 <p class="eyebrow">{e(SITE["ward"])} · {e(SITE["council"])}</p>
 <h1>{e(SITE["hero_lead"])} <em>{e(SITE["suburbs"])}.</em></h1>
@@ -304,7 +338,8 @@ def index_page(items, preview, fragment=False):
 <div class="about-text">{about_html}</div>
 </section>
 </main>
-{SEARCH_JS}"""
+{SEARCH_JS}
+{SLIDES_JS if len(slides) > 1 else ""}"""
     title = f'{SITE["site_title"]} {SITE["tagline"]}'
     desc = (f'{SITE["councillor"]}, {SITE["ward"]} ({SITE["suburbs"]}), {SITE["council"]}: video, summaries and transcripts '
             f'of his monthly reports to Council.')

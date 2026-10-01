@@ -85,5 +85,32 @@
       "focus": "45% 50%"
     }
   ],
-  "share_image": "photos/glen-square.jpg"
+  "share_image": "photos/glen-square.jpg",
+  "hero_photos": [
+    {
+      "file": "hero-campaign.jpg",
+      "alt": "Glen Atwell",
+      "caption": ""
+    },
+    {
+      "file": "hero-cfa.jpg",
+      "alt": "Glen Atwell and his two sons giving a thumbs up beside the CFA koala mascot",
+      "caption": "With the boys at the Scoresby CFA open day."
+    },
+    {
+      "file": "hero-mayor.jpg",
+      "alt": "Glen Atwell with Cr Lisa Cooper in mayoral robes",
+      "caption": "With Cr Lisa Cooper, Mayor of Knox, 2024 to 2025."
+    },
+    {
+      "file": "hero-foyer.jpg",
+      "alt": "Glen Atwell and his son Austin with cans of soft drink in the council foyer",
+      "caption": "The 2025 mayoral election with Austin, who only comes for the soft drink."
+    },
+    {
+      "file": "hero-headshot.jpg",
+      "alt": "Glen Atwell",
+      "caption": "Knox City Councillor Glen Atwell."
+    }
+  ]
 }
