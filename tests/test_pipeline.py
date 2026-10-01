@@ -97,6 +97,15 @@ class ReportFiles(unittest.TestCase):
             self.assertTrue(r["video_url"].endswith(f"knox-{r['date'][2:].replace('-', '')}.mp4"), r["date"])
             self.assertFalse(re.search(chr(0x2014), pathlib.Path(r["path"]).read_text()), r["date"])
 
+    def test_youtube_titles_lead_with_the_topic_and_fit(self):
+        for r in content.all_reports():
+            title = run.youtube_text(r).splitlines()[0]
+            self.assertLessEqual(len(title), 100, title)
+            self.assertTrue(title.startswith(r["video_title"] or r["headline"][:20]), title)
+        sample = dict(content.all_reports()[0], video_title="Stud Road phone tower and The Dizzy Rooster", date="2026-09-28")
+        self.assertEqual(run.youtube_text(sample).splitlines()[0],
+                         "Stud Road phone tower and The Dizzy Rooster | Cr Glen Atwell, Rowville and Scoresby, 28 Sep 2026")
+
 
 class CheckCommand(unittest.TestCase):
     def test_check_drafts_new_report_and_records_the_rest(self):

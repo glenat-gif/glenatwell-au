@@ -21,6 +21,7 @@ One file per report, named by meeting date, for example `content/reports/2026-09
 | --- | --- |
 | `status` | `draft` or `published` |
 | `youtube` | The video's ID, the part after `watch?v=` in its YouTube address |
+| `video_title` | The short topic that leads the YouTube title, 47 characters or fewer. The title is built as `topic \| Cr Glen Atwell, Rowville and Scoresby, 28 Sep 2026` |
 | `clip_start`, `clip_end` | Where the clip starts and ends in the meeting recording, in seconds |
 | `timing` | How the times were found: `auto` (captions), `mixed` or `index` (agenda index), `manual` (set by hand) |
 | `topics` | Shown beside the report, separated by ` \| ` |

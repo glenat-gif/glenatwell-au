@@ -27,6 +27,11 @@ def long_date(iso):
     return f"{d.day} {d:%B %Y}"
 
 
+def short_date(iso):
+    d = dt.date.fromisoformat(iso)
+    return f"{d.day} {d:%b %Y}"
+
+
 def role_from(title):
     t = title.lower()
     if "deputy mayor" in t:
@@ -60,11 +65,10 @@ def meeting_length(video_url):
 def youtube_text(report):
     """Title and description to paste into YouTube when uploading the clip."""
     ward = f"{SITE['ward']} ({SITE['suburbs']})"
-    if report.get("kind", "report") == "report":
-        title = f"Councillor Report, {long_date(report['date'])} | {SITE['councillor']}, {ward}"
-    else:                                   # a motion or speech leads with its own headline
-        title = f"{report['headline']} | {SITE['councillor']}"
-    title = title[:100]                     # YouTube's limit for a title
+    # The topic leads, because YouTube cuts a title at about 55 characters in a list. 100 is its hard limit.
+    tail = f" | {SITE['councillor']}, {SITE['suburbs']}, {short_date(report['date'])}"
+    lead = report.get("video_title") or report["headline"]
+    title = lead[:100 - len(tail)].rstrip(" ,") + tail
     lines = [title,
              "", report.get("summary", "").strip(), "",
              (f"{report['label']}. " if report.get("label") else "")
@@ -91,13 +95,14 @@ def draft_report(meeting, info, found):
     clip_start, clip_end, timing = knox.refine(cues, found["start"], end, SITE["caption_aliases"])
     text = clean.clean(knox.segment_text(cues, clip_start, clip_end)) if cues else ""
     report = {
-        "date": meeting["date"], "status": "draft", "youtube": "", "headline": "",
+        "date": meeting["date"], "status": "draft", "youtube": "", "headline": "", "video_title": "",
         "role": role_from(found["title"]), "meeting_url": meeting["url"],
         "video_url": info["video_url"], "clip_start": clip_start, "clip_end": clip_end,
         "meeting_length": meeting_length(info["video_url"]) if info["video_url"] else None,
         "timing": timing, "topics": [], "summary": "",
         "transcript": "\n\n".join(clean.paragraphs(text)),
-        "check": ["Watch the clip: does it start and end cleanly?",
+        "check": ["Write the video_title for YouTube: the top one or two topics, 47 characters or fewer",
+                  "Watch the clip: does it start and end cleanly?",
                   "Read the transcript against the video (captions mis-hear local names)"],
     }
     if timing != "auto":
