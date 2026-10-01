@@ -82,6 +82,8 @@ A speech that is not a monthly report gets its own file in `content/reports/` wi
 | `featured` | `yes` pins it to the top of the home page. Only the first featured piece is shown |
 | `summary_label` | Heading for the first section, for example `Statement` |
 
+To show the wording of a motion, add a `## Motion` section between `## Summary` and `## Transcript`. Plain lines become paragraphs, lines starting `1.` become numbered points, and indented lines starting `a)` become sub-points.
+
 These are added by hand: the daily check only looks for monthly reports. Set `clip_start` and `clip_end` in seconds, then run **Cut clips** with the file's name (without `.md`).
 
 ## Each month

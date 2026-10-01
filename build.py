@@ -10,6 +10,7 @@ import datetime as dt
 import html
 import json
 import pathlib
+import re
 import shutil
 import sys
 
@@ -54,6 +55,36 @@ def hours_minutes(seconds):
 
 def paragraphs(text):
     return "\n".join(f"<p>{e(p.strip())}</p>" for p in text.split("\n\n") if p.strip())
+
+
+def motion_html(text):
+    """The wording of a motion: plain paragraphs, then numbered points, with lettered sub-points indented under them."""
+    out, depth = [], 0
+    def close(to):
+        nonlocal depth
+        while depth > to:
+            out.append("</li></ol>"); depth -= 1
+    for block in text.split("\n"):
+        line = block.rstrip()
+        if not line.strip():
+            continue
+        top = re.match(r"(\d+)\.\s+(.*)", line)
+        sub = re.match(r"\s+([a-z])\)\s+(.*)", line)
+        if top:
+            close(1)
+            out.append("</li>" if depth == 1 else "<ol>"); depth = 1
+            out.append(f"<li>{e(top.group(2))}")
+        elif sub and depth:
+            if depth == 1:
+                out.append('<ol type="a">'); depth = 2
+            else:
+                out.append("</li>")
+            out.append(f"<li>{e(sub.group(2))}")
+        else:
+            close(0)
+            out.append(f"<p>{e(line.strip())}</p>")
+    close(0)
+    return "\n".join(out)
 
 
 def page(title, description, body, root, preview, path="", fragment=False):
@@ -408,6 +439,8 @@ def report_page(report, newer, older, preview):
     chips = "".join(f"<li>{e(t)}</li>" for t in report["topics"])
     role = {"Deputy Mayor": "Reported as Deputy Mayor", "Mayor": "Reported as Mayor"}.get(
         report["role"], "Reported as ward councillor")
+    motion = (f'<section class="motion"><p class="eyebrow">The motion</p>\n<div class="prose">{motion_html(report["motion"])}</div>\n</section>'
+              if report.get("motion") else "")
     photo = ""
     if report["image"]:
         caption = f"<figcaption>{e(report['image_caption'])}</figcaption>" if report["image_caption"] else ""
@@ -444,6 +477,7 @@ def report_page(report, newer, older, preview):
 <div class="prose">{paragraphs(report['summary'])}</div>
 </section>
 {photo}
+{motion}
 <section class="transcript"><p class="eyebrow">Transcript</p>
 <p class="note">Edited from the meeting's auto-generated captions.</p>
 <div class="prose">{paragraphs(report['transcript'])}</div>

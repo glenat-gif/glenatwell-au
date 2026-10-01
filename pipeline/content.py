@@ -43,7 +43,9 @@ def read_report(path):
     body = m.group(2)
     summary = re.search(r"## Summary\n(.*?)(?=\n## |\Z)", body, re.S)
     transcript = re.search(r"## Transcript\n(.*)\Z", body, re.S)
+    motion = re.search(r"## Motion\n(.*?)(?=\n## |\Z)", body, re.S)     # optional: the wording of a notice of motion
     report["summary"] = summary.group(1).strip() if summary else ""
+    report["motion"] = motion.group(1).strip() if motion else ""
     report["transcript"] = transcript.group(1).strip() if transcript else ""
     for key in ("clip_start", "clip_end", "meeting_length"):
         report[key] = float(report[key]) if report[key] else None
@@ -65,8 +67,10 @@ def write_report(report, path=None):
         if key in OPTIONAL and not value:
             continue
         lines.append(f"{key}: {value}".rstrip())
-    lines += ["---", "", "## Summary", "", report.get("summary", "").strip(), "",
-              "## Transcript", "", report.get("transcript", "").strip(), ""]
+    lines += ["---", "", "## Summary", "", report.get("summary", "").strip(), ""]
+    if report.get("motion"):
+        lines += ["## Motion", "", report["motion"].strip(), ""]
+    lines += ["## Transcript", "", report.get("transcript", "").strip(), ""]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines), encoding="utf-8")
     return path
