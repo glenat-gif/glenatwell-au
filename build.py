@@ -233,9 +233,9 @@ SEARCH_JS = """<script>
 </script>"""
 
 
-def feature_block(item, preview):
-    """The pinned piece at the top of the home page."""
-    opening = paragraphs("\n\n".join(item["summary"].split("\n\n")[:2]))
+def feature_block(item, preview, paras=2):
+    """A pinned piece at the top of the home page."""
+    opening = paragraphs("\n\n".join(item["summary"].split("\n\n")[:paras]))
     label = " · ".join(x for x in [item["label"], long_date(item["date"])] if x)
     outcome = f'<span class="outcome">{e(item["outcome"])}</span>' if item["outcome"] else ""
     return f"""<section class="feature">
@@ -327,7 +327,7 @@ def hero_slides(slides):
 
 def index_page(items, preview, fragment=False):
     reports = [r for r in items if r["kind"] == "report"] or items
-    featured = next((r for r in items if r["featured"]), None)
+    featured = [r for r in items if r["featured"]][:2]      # one is shown wide, two sit side by side
     latest = reports[0]
     first = dt.date.fromisoformat(items[-1]["date"])
     minutes = round(sum(seconds_of(r) for r in items) / 60)
@@ -365,7 +365,10 @@ def index_page(items, preview, fragment=False):
     # News coverage and Facebook sit side by side on a wide screen when both are present.
     duo = f'<div class="duo">\n{media}\n{social}\n</div>' if media and social else media + social
     about = SITE["about"] if isinstance(SITE["about"], list) else [SITE["about"]]
-    feature = feature_block(featured, preview) if featured else ""
+    if len(featured) == 2:
+        feature = '<div class="features">\n' + "\n".join(feature_block(r, preview, paras=1) for r in featured) + "\n</div>"
+    else:
+        feature = feature_block(featured[0], preview) if featured else ""
     figures = "".join(
         f'<figure><img src="photos/{e(ph["file"])}" alt="{e(ph["alt"])}" loading="lazy"'
         + (f' style="object-position:{e(ph["focus"])}"' if ph.get("focus") else "") + ">"

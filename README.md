@@ -79,7 +79,7 @@ A speech that is not a monthly report gets its own file in `content/reports/` wi
 | `label` | For example `Notice of Motion 184` |
 | `item` | The agenda item, for example `Item 10.2, Notices of Motion` |
 | `outcome` | For example `Carried unanimously` |
-| `featured` | `yes` pins it to the top of the home page. Only the first featured piece is shown |
+| `featured` | `yes` pins it to the top of the home page. One featured piece is shown wide; two sit side by side (the two most recent) |
 | `summary_label` | Heading for the first section, for example `Statement` |
 
 To show the wording of a motion, add a `## Motion` section between `## Summary` and `## Transcript`. Plain lines become paragraphs, lines starting `1.` become numbered points, and indented lines starting `a)` become sub-points.
