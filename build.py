@@ -326,11 +326,10 @@ def index_page(items, preview, fragment=False):
     social = ""
     if SITE.get("facebook"):                 # Facebook's own box of recent posts, loaded only when scrolled to
         fb = e(SITE["facebook"])
+        note = f'\n<p class="social-note">{e(SITE["facebook_note"])}</p>' if SITE.get("facebook_note") else ""
         social = f"""<section class="social" id="facebook">
-<div class="social-text"><h2>On Facebook</h2>
-<p>{e(SITE.get("facebook_note", ""))}</p>
-<p><a class="button" href="{fb}" rel="noopener">Follow on Facebook</a></p></div>
-<div class="fb-box" id="fb-box" data-page="{fb}" data-title="{e(SITE["councillor"])} on Facebook"><a href="{fb}" rel="noopener">See the latest posts on Facebook</a></div>
+<div class="social-head"><h2>On Facebook</h2><a class="button" href="{fb}" rel="noopener">Follow on Facebook</a></div>
+<div class="fb-box" id="fb-box" data-page="{fb}" data-title="{e(SITE["councillor"])} on Facebook"><a href="{fb}" rel="noopener">See the latest posts on Facebook</a></div>{note}
 </section>"""
     # News coverage and Facebook sit side by side on a wide screen when both are present.
     duo = f'<div class="duo">\n{media}\n{social}\n</div>' if media and social else media + social
