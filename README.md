@@ -62,6 +62,7 @@ Other photos live in `static/photos/`:
 
 - **About section:** listed under `about_photos` in `site.json` (file, description for screen readers, optional caption). `about_photos_after` sets which paragraph they follow.
 - **On a report:** add `image: filename.jpg` to the report file. The photo becomes that report's tile on the home page and appears on its page. `image_caption` adds a caption, and `image_focus` (for example `50% 20%`) sets which part of a tall photo shows in the wide tile.
+- **Facebook:** `facebook` in `site.json` is the address of the Facebook Page whose recent posts appear in the "On Facebook" section, and `facebook_note` is the line of text beside it. Remove `facebook` to drop the section. It only works for a Page, not a personal profile.
 - **Link previews:** `share_image` in `site.json` is the picture shown when the site is shared on social media.
 
 The "In the media" list is the `media` section of `site.json`: outlet, date, title and link for each item.

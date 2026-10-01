@@ -179,6 +179,15 @@ figcaption { margin-top: 0.5rem; font-size: 0.875rem; line-height: 1.45; color: 
 .photo img { display: block; width: 100%; height: auto; max-height: 34rem; object-fit: cover; border-radius: 6px; }
 .about img { width: 100%; max-width: 14rem; border-radius: 6px; margin-top: 1rem; }
 
+/* Facebook's box of recent posts */
+.social { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem 3rem; border-top: 1px solid var(--line); padding-top: 3rem; }
+@media (min-width: 52rem) { .social { grid-template-columns: 14rem minmax(0, 1fr); } }
+.social h2 { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; }
+.social-text { display: grid; gap: 1rem; align-content: start; }
+.social-text p { color: var(--muted); line-height: 1.5; }
+.fb-box { position: relative; width: 100%; max-width: 500px; height: 640px; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--surface); display: grid; place-items: center; }
+.fb-box a { font-weight: 600; padding: 1rem; text-align: center; }
+.fb-box iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .media { display: grid; gap: 1.25rem; border-top: 1px solid var(--line); padding-top: 3rem; }
 .media h2 { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; }
 .media ul { list-style: none; margin: 0; padding: 0; display: grid; }

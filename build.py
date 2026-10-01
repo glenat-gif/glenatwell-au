@@ -251,6 +251,29 @@ SLIDES_JS = """<script>
 </script>"""
 
 
+FACEBOOK_JS = """<script>
+(function () {
+  var box = document.getElementById('fb-box'); if (!box) return;
+  function load() {
+    var w = Math.max(180, Math.min(500, Math.floor(box.clientWidth))), h = 640;
+    var f = document.createElement('iframe');
+    f.src = 'https://www.facebook.com/plugins/page.php?href=' + encodeURIComponent(box.dataset.page) +
+      '&tabs=timeline&width=' + w + '&height=' + h +
+      '&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=false';
+    f.width = w; f.height = h; f.title = box.dataset.title;
+    f.setAttribute('scrolling', 'no'); f.setAttribute('frameborder', '0');
+    f.setAttribute('allow', 'encrypted-media; picture-in-picture; web-share');
+    box.appendChild(f);
+  }
+  if (!('IntersectionObserver' in window)) { load(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    if (entries.some(function (en) { return en.isIntersecting; })) { seen.disconnect(); load(); }
+  }, { rootMargin: '400px' });
+  seen.observe(box);
+})();
+</script>"""
+
+
 def hero_slides(slides):
     """The photo frame at the top of the home page: one photo, or a few that change every six seconds."""
     imgs = "".join(
@@ -298,6 +321,15 @@ def index_page(items, preview, fragment=False):
             f'<li><span class="mono">{e(m["outlet"])} · {long_date(m["date"])}</span>'
             f'<a href="{e(m["url"])}">{e(m["title"])}</a></li>' for m in SITE["media"])
         media = f'<section class="media" id="media"><h2>In the media</h2><ul>{rows}</ul></section>'
+    social = ""
+    if SITE.get("facebook"):                 # Facebook's own box of recent posts, loaded only when scrolled to
+        fb = e(SITE["facebook"])
+        social = f"""<section class="social" id="facebook">
+<div class="social-text"><h2>On Facebook</h2>
+<p>{e(SITE.get("facebook_note", ""))}</p>
+<p><a class="button" href="{fb}" rel="noopener">Follow on Facebook</a></p></div>
+<div class="fb-box" id="fb-box" data-page="{fb}" data-title="{e(SITE["councillor"])} on Facebook"><a href="{fb}" rel="noopener">See the latest posts on Facebook</a></div>
+</section>"""
     about = SITE["about"] if isinstance(SITE["about"], list) else [SITE["about"]]
     feature = feature_block(featured, preview) if featured else ""
     figures = "".join(
@@ -333,13 +365,15 @@ def index_page(items, preview, fragment=False):
 <p class="empty" id="q-empty" hidden>No report mentions that yet.</p>
 </section>
 {media}
+{social}
 <section class="about" id="about">
 <div><h2>About</h2></div>
 <div class="about-text">{about_html}</div>
 </section>
 </main>
 {SEARCH_JS}
-{SLIDES_JS if len(slides) > 1 else ""}"""
+{SLIDES_JS if len(slides) > 1 else ""}
+{FACEBOOK_JS if social else ""}"""
     title = f'{SITE["site_title"]} {SITE["tagline"]}'
     desc = (f'{SITE["councillor"]}, {SITE["ward"]} ({SITE["suburbs"]}), {SITE["council"]}: video, summaries and transcripts '
             f'of his monthly reports to Council.')
