@@ -13,7 +13,7 @@
     ["\\b(Bazewater)\\b", "Bayswater"],
     ["\\b(Montana South|one turn south)\\b", "Wantirna South"],
     ["\\b(KKnox|noox|KNX|Nox)\\b", "Knox"],
-    ["\\bshares? ?space\\b", "Sharespace"],
+    ["\\bshares? ?space\\b", "Share Space"],
     ["\\bstore ?h? ?holders\\b", "stallholders"],
     ["\\bmen ?shed\\b", "Men's Shed"],
     ["\\byour library limited\\b", "Your Library Limited"],
