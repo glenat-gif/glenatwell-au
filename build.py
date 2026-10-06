@@ -616,6 +616,19 @@ def feed(reports):
 """
 
 
+def sitemap(reports, issues):
+    base = SITE["base_url"].rstrip("/")
+    pages = [("", reports[0]["date"])]
+    pages += [(f"issues/{i['slug']}.html", None) for i in issues]
+    pages += [(f"reports/{r['slug']}.html", r["date"]) for r in reports]
+    urls = "".join(f"<url><loc>{e(base)}/{path}</loc>" + (f"<lastmod>{date}</lastmod>" if date else "") + "</url>\n"
+                   for path, date in pages)
+    return f"""<?xml version="1.0" encoding="utf-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{urls}</urlset>
+"""
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--drafts", action="store_true", help="include drafts and their review notes")
@@ -665,6 +678,8 @@ def main(argv=None):
             report_page(report, newer, older, args.drafts, issues), encoding="utf-8")
     if SITE.get("base_url") and not args.drafts:
         (out / "feed.xml").write_text(feed(reports), encoding="utf-8")
+        (out / "sitemap.xml").write_text(sitemap(reports, issues), encoding="utf-8")
+        (out / "robots.txt").write_text(f'Sitemap: {SITE["base_url"].rstrip("/")}/sitemap.xml\n', encoding="utf-8")
     print(f"Built {len(reports)} report pages in {out.relative_to(ROOT)}/")
 
 

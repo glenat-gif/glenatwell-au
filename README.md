@@ -42,7 +42,8 @@ One file per report, named by meeting date, for example `content/reports/2026-09
 1. In the repository: Settings, Pages, Custom domain, enter `glenatwell.au` and save.
 2. At the registrar for glenatwell.au, add four A records for the bare domain pointing to GitHub Pages: `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`. Add a CNAME record for `www` pointing to `<your-github-username>.github.io`. Check these against GitHub's current Pages documentation before saving, in case the addresses have changed.
 3. Back in Settings, Pages, tick "Enforce HTTPS" once it becomes available (it can take up to a day).
-4. At the registrar for glenatwell.com, set up domain forwarding (a permanent, 301 redirect) to `https://glenatwell.au`.
+4. At the registrar for glenatwell.com, set up domain forwarding (a permanent, 301 redirect) to `https://glenatwell.au`, for both `glenatwell.com` and `www.glenatwell.com`. Choose a plain redirect, not "masked" or "frame" forwarding, and keep the path so old links land on the same page.
+5. In Google Search Console, add `glenatwell.au` as a property and submit `https://glenatwell.au/sitemap.xml`. The build writes the sitemap and a `robots.txt` that points to it.
 
 ## Look and wording
 
