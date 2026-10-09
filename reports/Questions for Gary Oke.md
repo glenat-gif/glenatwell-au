@@ -49,3 +49,5 @@ Checklist to confirm the partnering route into the Oke bookmaking business. Grou
 - What is in it for them: "helping my best mate" plus "bringing in someone for fresh partnerships", i.e. a new partnership and site with a new registered partner rather than admission to the existing OkeBet partnership.
 
 Open after this reply: questions 1 to 4 and 7 to 20, plus two new ones. First, the proposed split and capital contribution for a fresh partnership. Second, whether the VBA applies the two-year on-course-only restriction to a new online partnership whose new member enters from an on-course class.
+
+Question 9 update: the Okes have exited OkeBet (Norm and Opie were the partnership at 12 September 2024; Opie sole since). Gary was a partner during the 2023 conduct per the VGCCC reasons. Remaining ask on this item: the outcome of the April 2026 VCAT penalty hearing and whether any conditions carried to their current registrations.
