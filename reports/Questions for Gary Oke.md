@@ -41,3 +41,11 @@ Checklist to confirm the partnering route into the Oke bookmaking business. Grou
 
 21. Confirm your race-meeting count as a clerk and which bookmakers will write the VBA's employment letters.
 22. Ask whether the VBA has ever discounted a partner's clerking as too long ago.
+
+## Answers so far (Gary, 9 October 2026 by text)
+
+- Timeline: the Oke family will support becoming an online bookmaker "over the next 1.5 years". Consistent with the key-employee route estimate.
+- Route: become a registered sole trader; the VBA guarantee is the gate and the Okes will support it; the VGCCC approves sole traders; the VBA will want to see key-employee work, so stale clerking alone is not expected to be enough. Answers questions 5 (in part) and 6.
+- What is in it for them: "helping my best mate" plus "bringing in someone for fresh partnerships", i.e. a new partnership and site with a new registered partner rather than admission to the existing OkeBet partnership.
+
+Open after this reply: questions 1 to 4 and 7 to 20, plus two new ones. First, the proposed split and capital contribution for a fresh partnership. Second, whether the VBA applies the two-year on-course-only restriction to a new online partnership whose new member enters from an on-course class.
