@@ -74,6 +74,10 @@ The "In the media" list is the `media` section of `site.json`: outlet, date, tit
 
 `issues.json` sorts what was said into issues, each with its own page under `issues/`. For each issue it holds a `title`, a one-line `intro`, and `match`: words or names to look for (regular expressions, ignoring case). A paragraph of a report's transcript is filed under an issue when it matches, unless it also matches one of the issue's `skip` patterns. New reports sort themselves. To change what an issue picks up, edit its `match` or `skip` list. A motion is pinned to the top of an issue by naming the issue on an `issues:` line in its file, for example `issues: community-safety`. Delete `issues.json` to remove the issue pages altogether.
 
+## The ward map
+
+`places.json` lists the places on the Ward page: each has an `id`, `name`, `lat` and `lng`, `match` patterns (like the issues, matched against transcript paragraphs), the `issues` it belongs to, and a one-line `blurb`. A place is drawn in orange with a popup of the latest thing said about it when any report mentions it, and in grey otherwise. Mark a place `"approx": true` if the pin is a rough position, or `"outside": true` if it lies outside the ward. Pin streets, parks and buildings only, never a resident's house. `static/ward.json` holds the ward boundary (traced from Council's ward map, accurate to roughly 30 metres), and `static/leaflet/` is the map library, served from the site itself. In `site.json`, `ward_title` and `ward_about` (a list of paragraphs) set the words above the map; `ward_history_title`, `ward_history` (paragraphs) and `ward_credit` (a source line) make the section at the foot of the page. Delete `places.json` to remove the Ward page.
+
 ## Motions and other speeches
 
 A speech that is not a monthly report gets its own file in `content/reports/` with a longer name, for example `2025-08-25-nom-184.md`. It works the same way as a report, with a few extra lines at the top:

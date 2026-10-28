@@ -130,5 +130,17 @@
   "facebook_note": "Updates from around Rowville and Scoresby between Council meetings.",
   "hero_style": "latest",
   "mark_photo": "hero-campaign.jpg",
-  "mark_line": "Knox City Councillor · Tirhatuan Ward"
+  "mark_line": "Knox City Councillor · Tirhatuan Ward",
+  "ward_title": "Tirhatuan Ward",
+  "ward_about": [
+    "Tirhatuan Ward takes in Rowville and Scoresby, from Dandenong Creek in the west to Stud Road and beyond in the east. It is one of nine wards in the City of Knox, and the one I was elected to represent in October 2024. The name is the local Aboriginal word for the sugar glider, by way of the first homestead in Knox. More on that below the map.",
+    "Every place I have raised in a Council meeting gets a pin. The map fills in as the reports do."
+  ],
+  "ward_credit": "The ward name history draws on Bryan Power's article Tirhatuan: Stories behind the Rowville-Lysterfield Ward Names, first published in the Rowville-Lysterfield Community News, September 1996.",
+  "ward_history_title": "Where the name comes from",
+  "ward_history": [
+    "The name goes back to the first homestead built in what is now Knox. In 1841 the Reverend James Clow, who had arrived from Scotland by way of India and Hobart, built a house on rising ground near the junction of Dandenong and Corhanwarrabul creeks and called it Tirhatuan, believed to be the local Aboriginal word for the sugar glider, which can still be found in the area.",
+    "The homestead was gone by the 1860s, but the site was excavated in the late 1970s and some of what was found is on display at Jells Park. A plaque on a boulder north of the bridge on Wellington Road marks Clow's arrival in August 1838. Tirhatuan Drive runs from Wellington Road to Rowville Secondary College, and the sugar glider is on the school's logo.",
+    "The ward took the name in 1996, when Council named the nine new wards for people and places in the district's history."
+  ]
 }

@@ -65,7 +65,8 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
 .wordmark small { font: 600 0.6875rem/1.3 var(--body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--band-muted); }
 footer .wordmark img { display: none; }
 footer .wordmark small { display: none; }
-.nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 1.5rem; font-size: 0.9375rem; font-weight: 500; }
+.nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; font-size: 0.9375rem; font-weight: 500; }
+@media (min-width: 40rem) { .nav ul { gap: 1.5rem; } }
 .nav ul a { text-decoration: none; color: var(--band-muted); transition: color 0.2s var(--ease); }
 .nav ul a:hover { color: var(--band-ink); }
 
@@ -231,6 +232,43 @@ figcaption { margin-top: 0.5rem; font-size: 0.875rem; line-height: 1.45; color: 
 .chips li a { display: block; padding: 0.3rem 0.75rem; border-radius: 999px; }
 .chips li a:hover { background: var(--accent); color: var(--on-accent); }
 .draft-flag { background: var(--accent); color: var(--on-accent); border-radius: 4px; padding: 0.1rem 0.4rem; font-weight: 700; }
+
+/* The ward page: map and places */
+.ward-history { max-width: var(--measure); padding-top: 1rem; }
+.ward-history p + p { margin-top: 1rem; }
+.ward-history h2 { font-size: clamp(1.6rem, 3.5vw, 2.1rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.75rem; }
+.credit { font-size: 0.875rem; color: var(--muted); }
+.ward-body { display: grid; gap: 3rem; padding-block: 3rem 5rem; }
+.ward-intro p { font-size: 1.1875rem; line-height: 1.55; max-width: var(--measure); }
+.ward-intro p + p { margin-top: 1rem; }
+.ward-intro p:first-child { font-size: clamp(1.25rem, 2.3vw, 1.5rem); line-height: 1.42; }
+.ward-map { display: grid; gap: 1.25rem; }
+.ward-note { color: var(--muted); max-width: 34rem; }
+.filters { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.filters button { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 0.4rem 0.9rem; font: 500 0.9rem var(--body); cursor: pointer; }
+.filters button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+#map { height: min(70vh, 40rem); min-height: 22rem; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); }
+.leaflet-popup-content { font: 400 0.9375rem/1.45 var(--body); color: var(--ink); }
+.leaflet-popup-content b { font: 700 1.0625rem/1.2 var(--display); }
+.leaflet-popup-content p { margin: 0.5rem 0 0; }
+.leaflet-popup-content .pop-quote { font: 400 0.9375rem/1.45 var(--record); }
+.leaflet-popup-content .pop-meta { color: var(--muted); font-size: 0.8125rem; }
+.leaflet-popup-content-wrapper { border-radius: 8px; }
+.place-list { display: grid; gap: 1.5rem; }
+.places { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); gap: 1rem; }
+.place { display: grid; gap: 0.5rem; align-content: start; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 1.1rem 1.25rem; }
+.place.spoken { border-left: 4px solid var(--accent); }
+.place h3 { font: 700 1.125rem/1.2 var(--display); letter-spacing: -0.01em; }
+.place h3 a { text-decoration: none; }
+.place h3 a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+.place > .mono { color: var(--muted); }
+.place p { font-size: 0.9375rem; line-height: 1.45; }
+.place-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.place-tags a { font-size: 0.8125rem; border: 1px solid var(--line); border-radius: 999px; padding: 0.15rem 0.6rem; text-decoration: none; }
+.place-links { list-style: none; margin: 0.25rem 0 0; padding: 0; display: grid; gap: 0.4rem; }
+.place-links a { display: grid; gap: 0.1rem; font-size: 0.875rem; text-decoration: none; }
+.place-links a:hover { text-decoration: underline; }
+.place-links .mono { color: var(--muted); }
 
 /* Facebook's box of recent posts, beside the news coverage on a wide screen */
 .duo { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4.5rem 4rem; }

@@ -95,9 +95,16 @@ def page(title, description, body, root, preview, path="", fragment=False):
     share = (f'<meta property="og:image" content="{e(SITE["base_url"].rstrip("/"))}/{e(SITE["share_image"])}">'
              '\n<meta name="twitter:card" content="summary">'
              if SITE.get("base_url") and SITE.get("share_image") else "")
-    icon = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E"
-            "%3Crect width='32' height='32' rx='7' fill='%23202648'/%3E"
-            f"%3Ccircle cx='16' cy='16' r='7' fill='%23{accent[0][1:]}'/%3E%3C/svg%3E")
+    if (ROOT / "static" / "icons" / "favicon-64.png").exists():
+        icons = (f'<link rel="icon" type="image/png" sizes="32x32" href="{root}icons/favicon-32.png">\n'
+                 f'<link rel="icon" type="image/png" sizes="64x64" href="{root}icons/favicon-64.png">\n'
+                 f'<link rel="icon" type="image/png" sizes="192x192" href="{root}icons/favicon-192.png">\n'
+                 f'<link rel="apple-touch-icon" href="{root}icons/apple-touch-icon.png">')
+    else:
+        icon = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E"
+                "%3Crect width='32' height='32' rx='7' fill='%23202648'/%3E"
+                f"%3Ccircle cx='16' cy='16' r='7' fill='%23{accent[0][1:]}'/%3E%3C/svg%3E")
+        icons = f'<link rel="icon" href="{icon}">'
     head = f"""<title>{e(title)}</title>
 <meta name="description" content="{e(description)}">
 <meta property="og:title" content="{e(title)}">
@@ -105,7 +112,7 @@ def page(title, description, body, root, preview, path="", fragment=False):
 <meta property="og:type" content="website">
 {share}
 {canonical}
-<link rel="icon" href="{icon}">
+{icons}
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{FONTS}">
 <style>
@@ -143,6 +150,8 @@ def page(title, description, body, root, preview, path="", fragment=False):
 def nav(root):
     media = f'<li><a href="{root}index.html#media">Media</a></li>' if SITE.get("media") else ""
     issues = f'<li><a href="{root}index.html#issues">Issues</a></li>' if (ROOT / "issues.json").exists() else ""
+    if (ROOT / "places.json").exists() and (ROOT / "static" / "ward.json").exists():
+        issues += f'<li><a href="{root}ward.html">Ward map</a></li>'
     if SITE.get("facebook"):
         media += f'<li><a href="{root}index.html#facebook">Facebook</a></li>'
     mark = ""
@@ -419,6 +428,129 @@ def issue_page(issue, issues, preview):
     return page(title, desc, body, "../", preview, path=f"issues/{issue['slug']}.html")
 
 
+WARD_JS = """<script src="leaflet/leaflet.js"></script>
+<script>
+(function () {
+  var data = JSON.parse(document.getElementById('ward-data').textContent);
+  var map = L.map('map', { scrollWheelZoom: false, tap: false });
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(map);
+  var ward = L.geoJSON(data.ward, { style: { color: '#ea8d30', weight: 3, fillColor: '#ea8d30', fillOpacity: 0.06 } }).addTo(map);
+  map.fitBounds(ward.getBounds(), { padding: [12, 12] });
+  var layer = L.layerGroup().addTo(map), active = 'all';
+  function render() {
+    layer.clearLayers();
+    data.places.forEach(function (p) {
+      if (active !== 'all' && p.issues.indexOf(active) < 0) return;
+      var n = p.mentions.length, spoke = n > 0;
+      var m = L.circleMarker([p.lat, p.lng], { radius: spoke ? 7 + Math.min(n, 8) * 1.2 : 6,
+        color: '#fff', weight: 2, fillColor: spoke ? '#ea8d30' : '#8a8fa8', fillOpacity: 0.95 });
+      var html = '<b>' + p.name + '</b>' + (p.blurb ? '<p>' + p.blurb + '</p>' : '');
+      if (spoke) {
+        var last = p.mentions[0];
+        html += '<p class="pop-quote">' + last.text + '</p>' +
+          '<p class="pop-meta">' + last.date + ' · <a href="reports/' + last.slug + '.html">Watch this report</a>' +
+          (n > 1 ? ' · <a href="#' + p.id + '">' + n + ' mentions</a>' : '') + '</p>';
+      } else { html += '<p class="pop-meta">Not raised in a report yet.</p>'; }
+      m.bindPopup(html, { maxWidth: 300 }); layer.addLayer(m);
+    });
+  }
+  [].slice.call(document.querySelectorAll('#map-filters button')).forEach(function (b) {
+    b.addEventListener('click', function () {
+      active = b.dataset.issue;
+      [].slice.call(document.querySelectorAll('#map-filters button')).forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      render();
+    });
+  });
+  [].slice.call(document.querySelectorAll('.place-list a.locate')).forEach(function (a) {
+    a.addEventListener('click', function (ev) {
+      ev.preventDefault(); var p = data.places.filter(function (q) { return q.id === a.dataset.id; })[0];
+      map.setView([p.lat, p.lng], 15); document.getElementById('map').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      layer.eachLayer(function (m) { if (m.getLatLng().lat === p.lat && m.getLatLng().lng === p.lng) m.openPopup(); });
+    });
+  });
+  render();
+})();
+</script>"""
+
+
+def ward_page(items, issues, preview):
+    """A map of the ward with a pin for each place raised in the chamber."""
+    places = json.loads((ROOT / "places.json").read_text(encoding="utf-8"))
+    ward = json.loads((ROOT / "static" / "ward.json").read_text(encoding="utf-8"))
+    titles = {i["slug"]: i["title"] for i in issues}
+    for p in places:
+        want = re.compile("|".join(p["match"]), re.I)
+        p["mentions"] = []
+        for r in items:
+            for para in r["transcript"].split("\n\n"):
+                if want.search(para):
+                    text = para.strip()
+                    if len(text) > 320:
+                        cut = text[:300]; text = cut[:cut.rfind(" ")] + "…"
+                    p["mentions"].append({"slug": r["slug"], "date": long_date(r["date"]), "headline": r["headline"], "text": text})
+                    break
+    spoken = [p for p in places if p["mentions"]]
+    used = [slug for slug in titles if any(slug in p["issues"] for p in spoken)]
+    filters = '<button type="button" data-issue="all" aria-pressed="true">Everything</button>' + "".join(
+        f'<button type="button" data-issue="{slug}" aria-pressed="false">{e(titles[slug])}</button>' for slug in used)
+    rows = []
+    for p in sorted(places, key=lambda p: (-len(p["mentions"]), p["name"])):
+        n = len(p["mentions"])
+        meta = (times(n, "mention") + " · last " + p["mentions"][0]["date"]) if n else "Not raised in a report yet"
+        tags = "".join(f'<a href="issues/{slug}.html">{e(titles[slug])}</a>' for slug in p["issues"] if slug in titles)
+        links = "".join(f'<li><a href="reports/{m["slug"]}.html"><span class="mono">{m["date"]}</span>{e(m["headline"])}</a></li>' for m in p["mentions"])
+        note = ' <span class="mono">outside the ward</span>' if p.get("outside") else (' <span class="mono">approximate</span>' if p.get("approx") else "")
+        rows.append(f"""<article class="place{' spoken' if n else ''}" id="{p['id']}">
+<h3><a class="locate" href="#map" data-id="{p['id']}">{e(p['name'])}</a>{note}</h3>
+<p class="mono">{meta}</p>
+<p>{e(p.get('blurb', ''))}</p>
+{f'<p class="place-tags">{tags}</p>' if tags else ''}
+{f'<ul class="place-links">{links}</ul>' if links else ''}
+</article>""")
+    data = json.dumps({"ward": ward, "places": [{k: p[k] for k in ("id", "name", "lat", "lng", "issues", "mentions", "blurb")} for p in places]})
+    safe = data.replace("</", "<\\/")
+    about = SITE.get("ward_about", [])
+    about_html = "".join(f"<p>{e(par)}</p>" for par in about)
+    history = SITE.get("ward_history", [])
+    history_html = ""
+    if history:
+        history_html = (f'<section class="ward-history prose"><h2>{e(SITE.get("ward_history_title", "Where the name comes from"))}</h2>'
+                        + "".join(f"<p>{e(par)}</p>" for par in history))
+        if SITE.get("ward_credit"):
+            history_html += f'<p class="credit">{e(SITE["ward_credit"])}</p>'
+        history_html += "</section>"
+    body = f"""<div class="band"><div class="wrap">
+{nav("")}
+<div class="report-head">
+<p class="eyebrow">Ward map · {e(SITE["council"])}</p>
+<h1>{e(SITE.get("ward_title", "The ward"))}</h1>
+<p class="mono">{e(SITE["suburbs"])} · {len(spoken)} places raised in the chamber</p>
+</div>
+</div></div>
+<main class="wrap ward-body">
+<div class="ward-intro prose">{about_html}</div>
+<section class="ward-map">
+<div class="section-head"><h2>On the map</h2><p class="ward-note">Orange pins are places I have raised in the chamber, sized by how often. Tap one to read what I said and when. Grey pins are on my radar. Zoom in where pins overlap.</p></div>
+<div class="filters" id="map-filters">{filters}</div>
+<div id="map" aria-label="Map of {e(SITE["ward"])}"></div>
+</section>
+<section class="place-list">
+<h2>Place by place</h2>
+<div class="places">
+{chr(10).join(rows)}
+</div>
+</section>
+{history_html}
+</main>
+<script type="application/json" id="ward-data">{safe}</script>
+{WARD_JS}"""
+    title = f'{SITE.get("ward_title", "The ward")} | {SITE["site_title"]}'
+    desc = f'A map of {SITE["ward"]} ({SITE["suburbs"]}) with every place {SITE["councillor"]} has raised in the Knox City Council chamber.'
+    html = page(title, desc, body, "", preview, path="ward.html")
+    return html.replace("<style>", '<link rel="stylesheet" href="leaflet/leaflet.css">\n<style>', 1)
+
+
 def index_page(items, preview, fragment=False, issues=()):
     reports = [r for r in items if r["kind"] == "report"] or items
     featured = [r for r in items if r["featured"]][:2]      # one is shown wide, two sit side by side
@@ -651,6 +783,12 @@ def main(argv=None):
         shutil.copy(PHOTO, out / "glen.jpg")
     if (ROOT / "static" / "photos").is_dir():
         shutil.copytree(ROOT / "static" / "photos", out / "photos")
+    if (ROOT / "static" / "icons").is_dir():
+        shutil.copytree(ROOT / "static" / "icons", out / "icons")
+    if (ROOT / "static" / "leaflet").is_dir():
+        shutil.copytree(ROOT / "static" / "leaflet", out / "leaflet")
+    if (ROOT / "static" / "ward.json").exists():
+        shutil.copy(ROOT / "static" / "ward.json", out / "ward.json")
     if not reports:
         body = (f'<div class="band"><div class="wrap">{nav("")}<div class="hero">'
                 f'<p class="eyebrow">{e(SITE["ward"])} · {e(SITE["council"])}</p>'
@@ -664,6 +802,8 @@ def main(argv=None):
     (out / "index.html").write_text(index_page(reports, args.drafts, issues=issues), encoding="utf-8")
     if args.drafts:
         (out / "preview.html").write_text(index_page(reports, True, fragment=True, issues=issues), encoding="utf-8")
+    if (ROOT / "places.json").exists() and (ROOT / "static" / "ward.json").exists():
+        (out / "ward.html").write_text(ward_page(reports, issues, args.drafts), encoding="utf-8")
     if issues:
         (out / "issues").mkdir()
         for issue in issues:
