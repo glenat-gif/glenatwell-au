@@ -145,8 +145,12 @@ def nav(root):
     issues = f'<li><a href="{root}index.html#issues">Issues</a></li>' if (ROOT / "issues.json").exists() else ""
     if SITE.get("facebook"):
         media += f'<li><a href="{root}index.html#facebook">Facebook</a></li>'
+    mark = ""
+    if SITE.get("mark_photo") and (ROOT / "static" / "photos" / SITE["mark_photo"]).exists():
+        mark = f'<img src="{root}photos/{e(SITE["mark_photo"])}" alt="" width="96" height="96">'
+    line = f'<small>{e(SITE["mark_line"])}</small>' if SITE.get("mark_line") else ""
     return f"""<nav class="nav">
-<a class="wordmark" href="{root}index.html">{e(SITE["site_title"])}</a>
+<a class="wordmark{' has-mark' if mark else ''}" href="{root}index.html">{mark}<span>{e(SITE["site_title"])}{line}</span></a>
 <ul><li><a href="{root}index.html#reports">Reports</a></li>{issues}{media}<li><a href="{root}index.html#about">About</a></li></ul>
 </nav>"""
 
@@ -436,9 +440,7 @@ def index_page(items, preview, fragment=False, issues=()):
 </a>"""
     if SITE.get("hero_style") == "latest":       # the newest report takes the right-hand side; one photo sits with the headline
         side, has_portrait = latest_card, False
-        if slides:
-            face = (f'<img class="hero-face" src="photos/{e(slides[0]["file"])}" alt="{e(SITE["councillor"])}" '
-                    'width="960" height="1200">')
+        face = bool(SITE.get("mark_photo"))       # the portrait lives in the site mark, so the headline needs no eyebrow
         slides = []
     elif slides:
         side = hero_slides(slides)
@@ -486,7 +488,7 @@ def index_page(items, preview, fragment=False, issues=()):
 {nav("")}
 <div class="hero{' has-portrait' if has_portrait else ''}">
 <div class="hero-text">
-{f'<div class="hero-id">{face}<p><b>{e(SITE["councillor"])}</b><span class="eyebrow">{e(SITE["ward"])} · {e(SITE["council"])}</span></p></div>' if face else f'<p class="eyebrow">{e(SITE["ward"])} · {e(SITE["council"])}</p>'}
+{'' if face else f'<p class="eyebrow">{e(SITE["ward"])} · {e(SITE["council"])}</p>'}
 <h1>{e(SITE["hero_lead"])} <em>{e(SITE["suburbs"])}.</em></h1>
 <p class="lede">{e(SITE["intro"])}</p>
 <p class="stats mono"><span><b>{len(reports)}</b> monthly reports</span><span><b>{minutes}</b> minutes of video</span><span>since <b>{first:%B %Y}</b></span></p>

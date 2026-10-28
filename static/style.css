@@ -58,7 +58,13 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
 .band { background: var(--band); color: var(--band-ink); }
 .nav { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1.5rem; padding-block: 1.25rem; }
 .wordmark { font: 700 1.25rem/1 var(--display); letter-spacing: -0.02em; text-decoration: none; display: inline-flex; align-items: center; gap: 0.6rem; }
-.wordmark::before { content: ""; width: 0.7rem; height: 0.7rem; background: var(--accent); border-radius: 50%; }
+.wordmark:not(.has-mark)::before { content: ""; width: 0.7rem; height: 0.7rem; background: var(--accent); border-radius: 50%; }
+.wordmark.has-mark { gap: 0.75rem; }
+.wordmark.has-mark img { width: 2.6rem; height: 2.6rem; border-radius: 50%; object-fit: cover; object-position: 50% 20%; flex: none; }
+.wordmark.has-mark span { display: grid; gap: 0.2rem; font-size: 1.125rem; line-height: 1.1; }
+.wordmark small { font: 600 0.6875rem/1.3 var(--body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--band-muted); }
+footer .wordmark img { display: none; }
+footer .wordmark small { display: none; }
 .nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 1.5rem; font-size: 0.9375rem; font-weight: 500; }
 .nav ul a { text-decoration: none; color: var(--band-muted); transition: color 0.2s var(--ease); }
 .nav ul a:hover { color: var(--band-ink); }
@@ -68,6 +74,7 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
 @media (min-width: 60rem) { .hero { grid-template-columns: minmax(0, 1fr) minmax(0, 24rem); gap: 4rem; padding-block: 3.5rem 3rem; } }
 @media (min-width: 60rem) { .hero.has-portrait { grid-template-columns: minmax(0, 1fr) minmax(0, 19rem); align-items: center; } }
 .hero .eyebrow { color: var(--band-muted); }
+.hero-text > h1:first-child { margin-top: 0; }
 .hero h1 { font-size: clamp(2.5rem, 6.2vw, 4.75rem); font-weight: 800; line-height: 0.96; letter-spacing: -0.03em; margin-top: 1rem; text-wrap: wrap; }
 .hero h1 em { display: block; font-style: normal; color: var(--accent); }
 .lede { margin-top: 1.5rem; max-width: 32rem; font-size: 1.1875rem; line-height: 1.5; color: var(--band-muted); }
@@ -94,12 +101,6 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
 @media (prefers-reduced-motion: reduce) { .slides .frame img { transition: none; } }
 
 /* Hero with the latest report on the right and one small portrait by the headline */
-.hero-id { display: flex; align-items: center; gap: 1rem; }
-.hero-face { width: 4.75rem; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 20%; border-radius: 8px; box-shadow: 0.35rem 0.35rem 0 var(--accent); flex: none; }
-.hero-id p { display: grid; gap: 0.35rem; }
-.hero-id b { font: 700 1.25rem/1.1 var(--display); letter-spacing: -0.01em; color: var(--band-ink); }
-.hero-id .eyebrow { color: var(--band-muted); }
-.hero-id + h1 { margin-top: 1.5rem; }
 
 .latest { display: flex; flex-direction: column; gap: 1rem; text-decoration: none; min-width: 0; }
 .latest-text { display: flex; flex-direction: column; gap: 0.6rem; min-width: 0; }
