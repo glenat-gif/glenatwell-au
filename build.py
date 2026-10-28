@@ -599,7 +599,9 @@ def index_page(items, preview, fragment=False, issues=()):
         rows = "".join(
             f'<li><span class="mono">{e(m["outlet"])} · {long_date(m["date"])}</span>'
             f'<a href="{e(m["url"])}">{e(m["title"])}</a></li>' for m in SITE["media"])
-        media = f'<section class="media" id="media"><h2>In the media</h2><ul>{rows}</ul></section>'
+        yt = (f'<a class="button" href="{e(SITE["youtube_channel"])}" rel="noopener">Watch on YouTube</a>'
+              if SITE.get("youtube_channel") else "")
+        media = f'<section class="media" id="media"><div class="social-head"><h2>In the media</h2>{yt}</div><ul>{rows}</ul></section>'
     social = ""
     if SITE.get("facebook"):                 # Facebook's own box of recent posts, loaded only when scrolled to
         fb = e(SITE["facebook"])
