@@ -354,6 +354,11 @@ def load_issues(items):
     return out
 
 
+def short_date(iso):
+    d = dt.date.fromisoformat(iso)
+    return f"{d.day} {d:%b %Y}"
+
+
 def times(n, word):
     return f"{n} {word}" if n == 1 else f"{n} {word}s"
 
@@ -361,21 +366,24 @@ def times(n, word):
 def issue_page(issue, issues, preview):
     def flag(r):
         return '<span class="draft-flag">Draft</span> ' if preview and r["status"] != "published" else ""
-    blocks = []
+    blocks, index = [], []
     for r in issue["pinned"]:
         outcome = f' · {e(r["outcome"])}' if r["outcome"] else ""
-        blocks.append(f"""<article class="issue-entry pinned">
+        index.append(f'<li><a href="#{r["slug"]}"><span class="mono">{short_date(r["date"])}</span>{e(r["label"] or "Speech")}: {e(r["headline"])}</a></li>')
+        blocks.append(f"""<article class="issue-entry pinned" id="{r["slug"]}">
 <p class="mono">{flag(r)}{e(r["label"] or "Speech")} · {long_date(r["date"])}{outcome}</p>
 <h2><a href="../reports/{r["slug"]}.html">{e(r["headline"])}</a></h2>
 <div class="prose">{paragraphs(r["summary"].split(chr(10) + chr(10))[0])}</div>
 <p><a class="button" href="../reports/{r["slug"]}.html">Watch the speech · {timecode(seconds_of(r))}</a></p>
 </article>""")
     for r, paras in issue["entries"]:
-        blocks.append(f"""<article class="issue-entry">
+        index.append(f'<li><a href="#{r["slug"]}"><span class="mono">{short_date(r["date"])}</span>{e(r["headline"])}</a></li>')
+        blocks.append(f"""<article class="issue-entry" id="{r["slug"]}">
 <p class="mono">{flag(r)}{long_date(r["date"])}</p>
 <div class="prose">{paragraphs((chr(10) + chr(10)).join(paras))}</div>
-<p class="issue-more"><a href="../reports/{r["slug"]}.html">Watch this report · {timecode(seconds_of(r))}</a></p>
+<p class="issue-more"><a href="../reports/{r["slug"]}.html">Watch this report · {timecode(seconds_of(r))}</a> <a class="to-top" href="#top">Back to top</a></p>
 </article>""")
+    contents = f'<nav class="issue-index" aria-label="On this page"><p class="eyebrow">On this page</p><ol>{"".join(index)}</ol></nav>'
     dates = [r["date"] for r in issue["pinned"]] + [r["date"] for r, _ in issue["entries"]]
     parts = []
     if issue["entries"]:
@@ -392,10 +400,13 @@ def issue_page(issue, issues, preview):
 <p class="mono">Raised in {" and ".join(parts)} · most recently {long_date(max(dates))}</p>
 </div>
 </div></div>
-<main class="wrap issue-body">
+<main class="wrap issue-body" id="top">
 <p class="issue-intro">{e(issue["intro"])} What follows is what I’ve said in the Council chamber.</p>
+<div class="issue-columns">
 <div class="issue-list">
 {chr(10).join(blocks)}
+</div>
+{contents}
 </div>
 <section class="issue-others"><p class="eyebrow">Other issues</p><ul class="chips">{others}</ul></section>
 </main>"""
