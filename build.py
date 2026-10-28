@@ -789,6 +789,71 @@ def sitemap(reports, issues, has_ward):
     return f'<?xml version="1.0" encoding="utf-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{body}</urlset>\n'
 
 
+AI_CRAWLERS = ("GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "Claude-User", "Claude-SearchBot",
+               "anthropic-ai", "PerplexityBot", "Perplexity-User", "Google-Extended", "Applebot-Extended",
+               "Bingbot", "DuckAssistBot", "meta-externalagent", "Amazonbot", "CCBot")
+
+
+def robots():
+    """Everyone is welcome, AI assistants included, and here is the sitemap."""
+    base = SITE["base_url"].rstrip("/")
+    bots = "".join(f"User-agent: {b}\nAllow: /\n\n" for b in AI_CRAWLERS)
+    return f"User-agent: *\nAllow: /\n\n{bots}Sitemap: {base}/sitemap.xml\n"
+
+
+def report_md(r):
+    """A report as plain Markdown, for people and assistants who would rather not parse HTML."""
+    base = SITE["base_url"].rstrip("/")
+    lines = [f"# {r['headline']}", "",
+             f"{SITE['councillor']}, {SITE['ward']} ({SITE['suburbs']}), {SITE['council']}. {'Notice of motion' if r['kind'] == 'motion' else 'Councillor report'}, "
+             f"Council meeting of {long_date(r['date'])}.", ""]
+    if r.get("role"):
+        lines += [f"Role at the time: {r['role']}.", ""]
+    lines += [f"Page: {base}/reports/{r['slug']}.html"]
+    if r.get("youtube"):
+        lines += [f"Video: https://www.youtube.com/watch?v={r['youtube']}"]
+    if r.get("meeting_url"):
+        lines += [f"Full meeting: {r['meeting_url']}"]
+    lines += ["", "## Summary", "", r["summary"], ""]
+    if r.get("motion"):
+        lines += ["## Motion", "", r["motion"].strip(), ""]
+    lines += ["## Transcript", "", r["transcript"].strip(), ""]
+    return "\n".join(lines)
+
+
+def llms_txt(reports, issues, has_ward):
+    """The llms.txt convention: what the site is and where everything lives, for AI assistants."""
+    base = SITE["base_url"].rstrip("/")
+    lines = [f"# {SITE['councillor']}, {SITE['ward']}, {SITE['council']}", "",
+             f"> {SITE['intro']} This is the councillor's own website, not a Council website; the views are his own. "
+             f"Transcripts are edited from the meeting webcast captions and may contain errors; the video is the record.", "",
+             f"Councillor for {SITE['suburbs']} since November 2024. Contact: {SITE.get('contact_email', '')}".rstrip(": ") + ".", "",
+             "## Everything in one file", "", f"- [All reports and the ward in plain text]({base}/llms-full.txt)", "",
+             "## Reports", ""]
+    for r in reports:
+        lines.append(f"- [{r['headline']}]({base}/reports/{r['slug']}.md): {long_date(r['date'])}. {r['summary']}")
+    if issues:
+        lines += ["", "## Issues", ""]
+        for i in issues:
+            lines.append(f"- [{i['title']}]({base}/issues/{i['slug']}.html): {i['intro']}".rstrip(": "))
+    if has_ward:
+        lines += ["", "## The ward", "", f"- [{SITE.get('ward_title', 'The ward')} map]({base}/ward.html): the ward boundary and every place raised in the chamber."]
+    return "\n".join(lines) + "\n"
+
+
+def llms_full(reports, issues):
+    """Every report in full, newest first, in one plain-text file."""
+    parts = [f"# {SITE['councillor']}, {SITE['ward']}, {SITE['council']}: all reports", "",
+             SITE["intro"], ""]
+    for par in SITE.get("ward_about", []) + SITE.get("ward_history", []):
+        parts += [par, ""]
+    if SITE.get("ward_credit"):
+        parts += [SITE["ward_credit"], ""]
+    for r in reports:
+        parts += ["---", "", report_md(r)]
+    return "\n".join(parts)
+
+
 def feed(reports):
     base = SITE["base_url"].rstrip("/")
     items = "".join(f"""<item><title>{e(r['headline'])}</title>
@@ -861,7 +926,11 @@ def main(argv=None):
     if SITE.get("base_url") and not args.drafts:
         (out / "feed.xml").write_text(feed(reports), encoding="utf-8")
         (out / "sitemap.xml").write_text(sitemap(reports, issues, (out / "ward.html").exists()), encoding="utf-8")
-        (out / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE['base_url'].rstrip('/')}/sitemap.xml\n", encoding="utf-8")
+        (out / "robots.txt").write_text(robots(), encoding="utf-8")
+        (out / "llms.txt").write_text(llms_txt(reports, issues, (out / "ward.html").exists()), encoding="utf-8")
+        (out / "llms-full.txt").write_text(llms_full(reports, issues), encoding="utf-8")
+        for r in reports:
+            (out / "reports" / f"{r['slug']}.md").write_text(report_md(r), encoding="utf-8")
     print(f"Built {len(reports)} report pages in {out.relative_to(ROOT)}/")
 
 

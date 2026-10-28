@@ -132,7 +132,12 @@ class SearchEngines(unittest.TestCase):
             sitemap = (dist / "sitemap.xml").read_text(encoding="utf-8")
             self.assertIn("https://glenatwell.au/ward.html", sitemap)
             self.assertEqual(sitemap.count("<url>"), len(list((dist / "reports").glob("*.html"))) + len(list((dist / "issues").glob("*.html"))) + 2)
-            self.assertIn("Sitemap: https://glenatwell.au/sitemap.xml", (dist / "robots.txt").read_text(encoding="utf-8"))
+            robots = (dist / "robots.txt").read_text(encoding="utf-8")
+            self.assertIn("Sitemap: https://glenatwell.au/sitemap.xml", robots)
+            self.assertIn("User-agent: ClaudeBot\nAllow: /", robots)
+            self.assertIn("llms-full.txt", (dist / "llms.txt").read_text(encoding="utf-8"))
+            self.assertIn("## Transcript", (dist / "llms-full.txt").read_text(encoding="utf-8"))
+            self.assertEqual(len(list((dist / "reports").glob("*.md"))), len(list((dist / "reports").glob("*.html"))))
             for name in ("index.html", next((dist / "reports").glob("*.html")).relative_to(dist)):
                 html = (dist / name).read_text(encoding="utf-8")
                 blob = re.search(r'<script type="application/ld\+json">(.*?)</script>', html, re.S).group(1)
