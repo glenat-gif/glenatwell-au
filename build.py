@@ -433,8 +433,8 @@ WARD_JS = """<script src="leaflet/leaflet.js"></script>
 (function () {
   var data = JSON.parse(document.getElementById('ward-data').textContent);
   var map = L.map('map', { scrollWheelZoom: false, tap: false });
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 19, subdomains: 'abcd',
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>' }).addTo(map);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, className: 'muted-tiles',
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(map);
   var ward = L.geoJSON(data.ward, { style: { color: '#202648', weight: 2.5, dashArray: '6 5', fillColor: '#202648', fillOpacity: 0.04 } }).addTo(map);
   map.fitBounds(ward.getBounds(), { padding: [12, 12] });
   var layer = L.layerGroup().addTo(map), active = 'all';
