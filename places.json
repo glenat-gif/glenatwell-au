@@ -1,363 +1,363 @@
 [
- {
-  "id": "stud-park",
-  "name": "Stud Park Shopping Centre",
-  "lat": -37.9201134,
-  "lng": 145.2364279,
-  "match": [
-   "Stud Park(?! playground| accessible| Reserve)"
-  ],
-  "issues": [
-   "roads-and-footpaths",
-   "community-safety"
-  ],
-  "blurb": "Rowville's main shopping centre, home to the library and Coffee with a Cop."
- },
- {
-  "id": "rowville-library",
-  "name": "Rowville Library",
-  "lat": -37.9197693,
-  "lng": 145.237282,
-  "match": [
-   "Rowville Library",
-   "Rowville Branch Library"
-  ],
-  "issues": [
-   "your-library"
-  ],
-  "blurb": "Part of the Your Library network, where I serve as Deputy Chair of the board."
- },
- {
-  "id": "stud-park-playground",
-  "name": "Stud Park accessible playground",
-  "lat": -37.9202176,
-  "lng": 145.2399673,
-  "match": [
-   "Stud Park playground",
-   "accessible playground at Stud Park",
-   "Stud Park accessible"
-  ],
-  "issues": [
-   "disability-access"
-  ],
-  "blurb": "The all-abilities playground beside the community centre, damaged by fire in June 2026."
- },
- {
-  "id": "rowville-community-centre",
-  "name": "Rowville Community Centre",
-  "lat": -37.9194007,
-  "lng": 145.2393776,
-  "match": [
-   "Rowville Community Centre"
-  ],
-  "issues": [
-   "markets",
-   "budget"
-  ],
-  "blurb": "Home of the Makers and Bakers Market and Council's budget pop-ups."
- },
- {
-  "id": "arcadia-reserve",
-  "name": "Arcadia Reserve and the 1st Rowville Scout Hall",
-  "lat": -37.9244043,
-  "lng": 145.2438809,
-  "match": [
-   "Arcadia Reserve",
-   "Rowville Scout Hall",
-   "1st Rowville Scouts?"
-  ],
-  "issues": [
-   "markets",
-   "schools"
-  ],
-  "blurb": "Where Share Space holds its community markets."
- },
- {
-  "id": "wellington-village",
-  "name": "Wellington Village",
-  "lat": -37.9284574,
-  "lng": 145.2526281,
-  "match": [
-   "Wellington Village"
-  ],
-  "issues": [
-   "arts-and-events"
-  ],
-  "blurb": "The local shops on Wellington Road, and their grand final day celebration."
- },
- {
-  "id": "rowville-cfa",
-  "name": "Rowville CFA",
-  "lat": -37.9263892,
-  "lng": 145.2484554,
-  "match": [
-   "Rowville CFA",
-   "Rowville Fire Brigade",
-   "CFA in Rowville",
-   "Santa run"
-  ],
-  "issues": [
-   "emergency-services"
-  ],
-  "blurb": "The volunteer brigade on Wellington Road, famous for the Santa run."
- },
- {
-  "id": "scoresby-cfa",
-  "name": "Scoresby CFA",
-  "lat": -37.8979623,
-  "lng": 145.2345056,
-  "match": [
-   "Scoresby CFA",
-   "Scoresby Fire Brigade"
-  ],
-  "issues": [
-   "emergency-services"
-  ],
-  "blurb": "Scoresby's volunteer brigade on Sara Road."
- },
- {
-  "id": "scoresby-rec",
-  "name": "Scoresby Recreation Reserve",
-  "lat": -37.8970498,
-  "lng": 145.2310996,
-  "match": [
-   "Scoresby Recreation Reserve",
-   "Scoresby Rec Reserve",
-   "Scoresby Tennis Centre",
-   "Scoresby Football"
-  ],
-  "issues": [
-   "local-sport",
-   "disability-access"
-  ],
-  "blurb": "Home of the Scoresby Football Netball Club, the tennis centre and the cricket club."
- },
- {
-  "id": "seebeck",
-  "name": "Seebeck Reserve",
-  "lat": -37.9434329,
-  "lng": 145.2314533,
-  "match": [
-   "Seebeck"
-  ],
-  "issues": [
-   "local-sport"
-  ],
-  "blurb": "Home ground of the Rowville Hawks and Rowville Cricket Club."
- },
- {
-  "id": "liberty-avenue",
-  "name": "Liberty Avenue Reserve",
-  "lat": -37.9314551,
-  "lng": 145.2433975,
-  "match": [
-   "Liberty Avenue"
-  ],
-  "issues": [
-   "local-sport"
-  ],
-  "blurb": "Home of the Rowville Knights junior football club."
- },
- {
-  "id": "rowville-primary",
-  "name": "Rowville Primary School",
-  "lat": -37.923412,
-  "lng": 145.236901,
-  "match": [
-   "Rowville Primary"
-  ],
-  "issues": [
-   "schools"
-  ],
-  "blurb": "Where I present the Tirhatuan Ward award each year."
- },
- {
-  "id": "rowville-secondary",
-  "name": "Rowville Secondary College",
-  "lat": -37.9238,
-  "lng": 145.2370706,
-  "match": [
-   "Rowville Secondary"
-  ],
-  "issues": [
-   "schools",
-   "arts-and-events"
-  ],
-  "blurb": "The western campus on Paratea Drive, where the yarning circle opened in 2025."
- },
- {
-  "id": "scoresby-primary",
-  "name": "Scoresby Primary School",
-  "lat": -37.893558,
-  "lng": 145.2263538,
-  "match": [
-   "Scoresby Primary"
-  ],
-  "issues": [
-   "schools",
-   "roads-and-footpaths"
-  ],
-  "blurb": "One of the two primary schools in the ward."
- },
- {
-  "id": "swimland",
-  "name": "Paul Sadler Swimland Rowville",
-  "lat": -37.9249305,
-  "lng": 145.2369232,
-  "match": [
-   "Swimland"
-  ],
-  "issues": [
-   "local-sport"
-  ],
-  "blurb": "Where hundreds of local kids swim the annual 1 km."
- },
- {
-  "id": "mens-shed",
-  "name": "Rowville Men's Shed",
-  "lat": -37.9422653,
-  "lng": 145.232363,
-  "match": [
-   "Men's Shed"
-  ],
-  "issues": [
-   "community-groups"
-  ],
-  "blurb": "On Police Road, fixing things and keeping men connected."
- },
- {
-  "id": "restore",
-  "name": "Restore Community Church",
-  "lat": -37.9076045,
-  "lng": 145.2454075,
-  "match": [
-   "Restore Community"
-  ],
-  "issues": [
-   "community-groups"
-  ],
-  "blurb": "Runs the Restore Community Care food relief program on Laser Drive."
- },
- {
-  "id": "dizzy-rooster",
-  "name": "The Dizzy Rooster",
-  "lat": -37.8987409,
-  "lng": 145.230053,
-  "match": [
-   "Dizzy Rooster"
-  ],
-  "issues": [
-   "planning"
-  ],
-  "blurb": "The Scoresby bar whose outdoor dining petition I tabled in September 2026."
- },
- {
-  "id": "stud-road-tower",
-  "name": "Stud Road tower site",
-  "lat": -37.9465,
-  "lng": 145.2215,
-  "approx": true,
-  "match": [
-   "telecommunications tower",
-   "phone tower",
-   "tower that's proposed"
-  ],
-  "issues": [
-   "planning"
-  ],
-  "blurb": "The proposed 36-metre phone tower near Police Road, withdrawn in October 2026 after more than 150 objections."
- },
- {
-  "id": "grayson-drive",
-  "name": "Grayson Drive, Scoresby",
-  "lat": -37.8940674,
-  "lng": 145.239283,
-  "match": [
-   "Grayson Drive"
-  ],
-  "issues": [
-   "planning"
-  ],
-  "blurb": "The street, not a property: residents' objections to a development application at 79 Grayson Drive."
- },
- {
-  "id": "murray-crescent",
-  "name": "Murray Crescent, Rowville",
-  "lat": -37.9208476,
-  "lng": 145.2496776,
-  "match": [
-   "Murray Crescent"
-  ],
-  "issues": [
-   "planning"
-  ],
-  "blurb": "The street, not a property: a planning application residents wrote to me about."
- },
- {
-  "id": "taylors-lane",
-  "name": "Taylors Lane and Turramurra Drive",
-  "lat": -37.9164924,
-  "lng": 145.2461188,
-  "match": [
-   "Taylors Lane",
-   "Turramurra Drive"
-  ],
-  "issues": [
-   "street-trees"
-  ],
-  "blurb": "Streets where residents raised gum trees shedding bark."
- },
- {
-  "id": "tirhatuan-park",
-  "name": "Tirhatuan Park",
-  "lat": -37.9458997,
-  "lng": 145.2222436,
-  "match": [
-   "Tirhatuan Park",
-   "Tirhatuan homestead"
-  ],
-  "issues": [],
-  "blurb": "On Dandenong Creek, near the site of the Tirhatuan homestead that gave the ward its name."
- },
- {
-  "id": "stamford-park",
-  "name": "Stamford Park Homestead",
-  "lat": -37.9143854,
-  "lng": 145.2334361,
-  "match": [
-   "Stamford Park",
-   "Stamford House"
-  ],
-  "issues": [],
-  "blurb": "The 1880s homestead and wetlands on the creek flats."
- },
- {
-  "id": "koolamara",
-  "name": "Koolamara Waters",
-  "lat": -37.8987041,
-  "lng": 145.2798587,
-  "outside": true,
-  "match": [
-   "Koolamara"
-  ],
-  "issues": [
-   "street-trees"
-  ],
-  "blurb": "Just outside the ward in Ferntree Gully, where 3,000 plants went in on National Tree Day 2025."
- },
- {
-  "id": "knox-bmx",
-  "name": "Knox BMX, The Swamp",
-  "lat": -37.899146,
-  "lng": 145.258301,
-  "outside": true,
-  "match": [
-   "Knox BMX",
-   "The Swamp"
-  ],
-  "issues": [
-   "local-sport"
-  ],
-  "blurb": "Just outside the ward in Knoxfield."
- }
+  {
+    "id": "stud-park",
+    "name": "Stud Park Shopping Centre",
+    "lat": -37.9201134,
+    "lng": 145.2364279,
+    "match": [
+      "Stud Park(?! playground| accessible| Reserve)"
+    ],
+    "issues": [
+      "roads-and-footpaths",
+      "community-safety"
+    ],
+    "blurb": "Rowville's main shopping centre, home to the library and Coffee with a Cop."
+  },
+  {
+    "id": "rowville-library",
+    "name": "Rowville Library",
+    "lat": -37.9197693,
+    "lng": 145.237282,
+    "match": [
+      "Rowville Library",
+      "Rowville Branch Library"
+    ],
+    "issues": [
+      "your-library"
+    ],
+    "blurb": "Part of the Your Library network, where I serve as Deputy Chair of the board."
+  },
+  {
+    "id": "stud-park-playground",
+    "name": "Stud Park accessible playground",
+    "lat": -37.9202176,
+    "lng": 145.2399673,
+    "match": [
+      "Stud Park playground",
+      "accessible playground at Stud Park",
+      "Stud Park accessible"
+    ],
+    "issues": [
+      "disability-access"
+    ],
+    "blurb": "The all-abilities playground beside the community centre, damaged by fire in June 2026."
+  },
+  {
+    "id": "rowville-community-centre",
+    "name": "Rowville Community Centre",
+    "lat": -37.9194007,
+    "lng": 145.2393776,
+    "match": [
+      "Rowville Community Centre"
+    ],
+    "issues": [
+      "markets",
+      "budget"
+    ],
+    "blurb": "Home of the Makers and Bakers Market and Council's budget pop-ups."
+  },
+  {
+    "id": "arcadia-reserve",
+    "name": "Arcadia Reserve and the 1st Rowville Scout Hall",
+    "lat": -37.9244043,
+    "lng": 145.2438809,
+    "match": [
+      "Arcadia Reserve",
+      "Rowville Scout Hall",
+      "1st Rowville Scouts?"
+    ],
+    "issues": [
+      "markets",
+      "schools"
+    ],
+    "blurb": "Where Share Space holds its community markets."
+  },
+  {
+    "id": "wellington-village",
+    "name": "Wellington Village",
+    "lat": -37.9284574,
+    "lng": 145.2526281,
+    "match": [
+      "Wellington Village"
+    ],
+    "issues": [
+      "arts-and-events"
+    ],
+    "blurb": "The local shops on Wellington Road, and their grand final day celebration."
+  },
+  {
+    "id": "rowville-cfa",
+    "name": "Rowville CFA",
+    "lat": -37.9263892,
+    "lng": 145.2484554,
+    "match": [
+      "Rowville CFA",
+      "Rowville Fire Brigade",
+      "CFA in Rowville",
+      "Santa run"
+    ],
+    "issues": [
+      "emergency-services"
+    ],
+    "blurb": "The volunteer brigade on Wellington Road, famous for the Santa run."
+  },
+  {
+    "id": "scoresby-cfa",
+    "name": "Scoresby CFA",
+    "lat": -37.8979623,
+    "lng": 145.2345056,
+    "match": [
+      "Scoresby CFA",
+      "Scoresby Fire Brigade"
+    ],
+    "issues": [
+      "emergency-services"
+    ],
+    "blurb": "Scoresby's volunteer brigade on Sara Road."
+  },
+  {
+    "id": "scoresby-rec",
+    "name": "Scoresby Recreation Reserve",
+    "lat": -37.8970498,
+    "lng": 145.2310996,
+    "match": [
+      "Scoresby Recreation Reserve",
+      "Scoresby Rec Reserve",
+      "Scoresby Tennis Centre",
+      "Scoresby Football"
+    ],
+    "issues": [
+      "local-sport",
+      "disability-access"
+    ],
+    "blurb": "Home of the Scoresby Football Netball Club, the tennis centre and the cricket club."
+  },
+  {
+    "id": "seebeck",
+    "name": "Seebeck Reserve",
+    "lat": -37.9434329,
+    "lng": 145.2314533,
+    "match": [
+      "Seebeck"
+    ],
+    "issues": [
+      "local-sport"
+    ],
+    "blurb": "Home ground of the Rowville Hawks and Rowville Cricket Club."
+  },
+  {
+    "id": "liberty-avenue",
+    "name": "Liberty Avenue Reserve",
+    "lat": -37.9314551,
+    "lng": 145.2433975,
+    "match": [
+      "Liberty Avenue"
+    ],
+    "issues": [
+      "local-sport"
+    ],
+    "blurb": "Home of the Rowville Knights junior football club."
+  },
+  {
+    "id": "rowville-primary",
+    "name": "Rowville Primary School",
+    "lat": -37.923412,
+    "lng": 145.236901,
+    "match": [
+      "Rowville Primary"
+    ],
+    "issues": [
+      "schools"
+    ],
+    "blurb": "Where I present the Tirhatuan Ward award each year."
+  },
+  {
+    "id": "rowville-secondary",
+    "name": "Rowville Secondary College",
+    "lat": -37.9238,
+    "lng": 145.2370706,
+    "match": [
+      "Rowville Secondary"
+    ],
+    "issues": [
+      "schools",
+      "arts-and-events"
+    ],
+    "blurb": "The western campus on Paratea Drive, where the yarning circle opened in 2025."
+  },
+  {
+    "id": "scoresby-primary",
+    "name": "Scoresby Primary School",
+    "lat": -37.893558,
+    "lng": 145.2263538,
+    "match": [
+      "Scoresby Primary"
+    ],
+    "issues": [
+      "schools",
+      "roads-and-footpaths"
+    ],
+    "blurb": "One of the two primary schools in the ward."
+  },
+  {
+    "id": "swimland",
+    "name": "Paul Sadler Swimland Rowville",
+    "lat": -37.9249305,
+    "lng": 145.2369232,
+    "match": [
+      "Swimland"
+    ],
+    "issues": [
+      "local-sport"
+    ],
+    "blurb": "Where hundreds of local kids swim the annual 1 km."
+  },
+  {
+    "id": "mens-shed",
+    "name": "Rowville Men's Shed",
+    "lat": -37.9422653,
+    "lng": 145.232363,
+    "match": [
+      "Men's Shed"
+    ],
+    "issues": [
+      "community-groups"
+    ],
+    "blurb": "On Police Road, fixing things and keeping men connected."
+  },
+  {
+    "id": "restore",
+    "name": "Restore Community Church",
+    "lat": -37.9076045,
+    "lng": 145.2454075,
+    "match": [
+      "Restore Community"
+    ],
+    "issues": [
+      "community-groups"
+    ],
+    "blurb": "Runs the Restore Community Care food relief program on Laser Drive."
+  },
+  {
+    "id": "dizzy-rooster",
+    "name": "The Dizzy Rooster",
+    "lat": -37.8987409,
+    "lng": 145.230053,
+    "match": [
+      "Dizzy Rooster"
+    ],
+    "issues": [
+      "planning"
+    ],
+    "blurb": "The Scoresby bar whose outdoor dining petition I tabled in September 2026."
+  },
+  {
+    "id": "stud-road-tower",
+    "name": "Stud Road tower site",
+    "lat": -37.946077,
+    "lng": 145.220179,
+    "approx": true,
+    "match": [
+      "telecommunications tower",
+      "phone tower",
+      "tower that's proposed"
+    ],
+    "issues": [
+      "planning"
+    ],
+    "blurb": "The proposed 36-metre phone tower near Police Road, withdrawn in October 2026 after more than 150 objections."
+  },
+  {
+    "id": "grayson-drive",
+    "name": "Grayson Drive, Scoresby",
+    "lat": -37.8940674,
+    "lng": 145.239283,
+    "match": [
+      "Grayson Drive"
+    ],
+    "issues": [
+      "planning"
+    ],
+    "blurb": "The street, not a property: residents' objections to a development application at 79 Grayson Drive."
+  },
+  {
+    "id": "murray-crescent",
+    "name": "Murray Crescent, Rowville",
+    "lat": -37.9208476,
+    "lng": 145.2496776,
+    "match": [
+      "Murray Crescent"
+    ],
+    "issues": [
+      "planning"
+    ],
+    "blurb": "The street, not a property: a planning application residents wrote to me about."
+  },
+  {
+    "id": "taylors-lane",
+    "name": "Taylors Lane and Turramurra Drive",
+    "lat": -37.9164924,
+    "lng": 145.2461188,
+    "match": [
+      "Taylors Lane",
+      "Turramurra Drive"
+    ],
+    "issues": [
+      "street-trees"
+    ],
+    "blurb": "Streets where residents raised gum trees shedding bark."
+  },
+  {
+    "id": "tirhatuan-park",
+    "name": "Tirhatuan Park",
+    "lat": -37.945723,
+    "lng": 145.220236,
+    "match": [
+      "Tirhatuan Park",
+      "Tirhatuan homestead"
+    ],
+    "issues": [],
+    "blurb": "On Dandenong Creek, near the site of the Tirhatuan homestead that gave the ward its name."
+  },
+  {
+    "id": "stamford-park",
+    "name": "Stamford Park Homestead",
+    "lat": -37.9143854,
+    "lng": 145.2334361,
+    "match": [
+      "Stamford Park",
+      "Stamford House"
+    ],
+    "issues": [],
+    "blurb": "The 1880s homestead and wetlands on the creek flats."
+  },
+  {
+    "id": "koolamara",
+    "name": "Koolamara Waters",
+    "lat": -37.8987041,
+    "lng": 145.2798587,
+    "outside": true,
+    "match": [
+      "Koolamara"
+    ],
+    "issues": [
+      "street-trees"
+    ],
+    "blurb": "Just outside the ward in Ferntree Gully, where 3,000 plants went in on National Tree Day 2025."
+  },
+  {
+    "id": "knox-bmx",
+    "name": "Knox BMX, The Swamp",
+    "lat": -37.899146,
+    "lng": 145.258301,
+    "outside": true,
+    "match": [
+      "Knox BMX",
+      "The Swamp"
+    ],
+    "issues": [
+      "local-sport"
+    ],
+    "blurb": "Just outside the ward in Knoxfield."
+  }
 ]

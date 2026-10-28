@@ -238,10 +238,11 @@ figcaption { margin-top: 0.5rem; font-size: 0.875rem; line-height: 1.45; color: 
 .ward-history p + p { margin-top: 1rem; }
 .ward-history h2 { font-size: clamp(1.6rem, 3.5vw, 2.1rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.75rem; }
 .credit { font-size: 0.875rem; color: var(--muted); }
-.ward-body { display: grid; gap: 3rem; padding-block: 3rem 5rem; }
+.ward-body { display: grid; gap: 2rem; padding-block: 2.5rem 5rem; }
 .ward-intro p { font-size: 1.1875rem; line-height: 1.55; max-width: var(--measure); }
 .ward-intro p + p { margin-top: 1rem; }
 .ward-intro p:first-child { font-size: clamp(1.25rem, 2.3vw, 1.5rem); line-height: 1.42; }
+.ward-intro p:first-child { max-width: 52rem; }
 .ward-map { display: grid; gap: 1.25rem; }
 .ward-note { color: var(--muted); max-width: 34rem; }
 .filters { display: flex; flex-wrap: wrap; gap: 0.5rem; }
