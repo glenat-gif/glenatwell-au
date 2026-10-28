@@ -123,6 +123,23 @@ class Issues(unittest.TestCase):
                 self.assertIn(slug, slugs, r["slug"])
 
 
+class SearchEngines(unittest.TestCase):
+    def test_build_writes_sitemap_robots_and_structured_data(self):
+        with tempfile.TemporaryDirectory(dir=ROOT) as tmp:
+            out = pathlib.Path(tmp).name
+            subprocess.run([sys.executable, str(ROOT / "build.py"), "--out", out], check=True, cwd=ROOT, capture_output=True)
+            dist = ROOT / out
+            sitemap = (dist / "sitemap.xml").read_text(encoding="utf-8")
+            self.assertIn("https://glenatwell.au/ward.html", sitemap)
+            self.assertEqual(sitemap.count("<url>"), len(list((dist / "reports").glob("*.html"))) + len(list((dist / "issues").glob("*.html"))) + 2)
+            self.assertIn("Sitemap: https://glenatwell.au/sitemap.xml", (dist / "robots.txt").read_text(encoding="utf-8"))
+            for name in ("index.html", next((dist / "reports").glob("*.html")).relative_to(dist)):
+                html = (dist / name).read_text(encoding="utf-8")
+                blob = re.search(r'<script type="application/ld\+json">(.*?)</script>', html, re.S).group(1)
+                json.loads(blob.replace("<\\/", "</"))
+                self.assertIn("Rowville and Scoresby", re.search(r"<title>(.*?)</title>", html).group(1))
+
+
 class CheckCommand(unittest.TestCase):
     def test_check_drafts_new_report_and_records_the_rest(self):
         pages = {"archive.php": (FIX / "archive.html").read_text(),

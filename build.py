@@ -87,8 +87,19 @@ def motion_html(text):
     return "\n".join(out)
 
 
-def page(title, description, body, root, preview, path="", fragment=False):
-    """One full HTML page. `root` is the relative path back to the site's top folder."""
+def person_ld():
+    """The councillor, for search engines."""
+    base = SITE.get("base_url", "").rstrip("/")
+    d = {"@type": "Person", "name": SITE["councillor"].replace("Cr ", ""), "jobTitle": f"Councillor, {SITE['ward']}",
+         "worksFor": {"@type": "GovernmentOrganization", "name": SITE["council"]}, "url": base + "/"}
+    links = [SITE.get(k) for k in ("facebook", "youtube") if SITE.get(k)]
+    if links:
+        d["sameAs"] = links
+    return d
+
+
+def page(title, description, body, root, preview, path="", fragment=False, ld=None):
+    """One full HTML page. `root` is the relative path back to the site's top folder. `ld` is structured data for search engines."""
     accent = ACCENTS.get(SITE.get("accent"), ACCENTS["orange"])
     canonical = (f'<link rel="canonical" href="{e(SITE["base_url"].rstrip("/"))}/{path}">'
                  if SITE.get("base_url") and not preview else "")
@@ -105,6 +116,9 @@ def page(title, description, body, root, preview, path="", fragment=False):
                 "%3Crect width='32' height='32' rx='7' fill='%23202648'/%3E"
                 f"%3Ccircle cx='16' cy='16' r='7' fill='%23{accent[0][1:]}'/%3E%3C/svg%3E")
         icons = f'<link rel="icon" href="{icon}">'
+    ld_html = ""
+    if ld and not preview:
+        ld_html = '<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False).replace("</", "<\\/") + "</script>"
     head = f"""<title>{e(title)}</title>
 <meta name="description" content="{e(description)}">
 <meta property="og:title" content="{e(title)}">
@@ -113,6 +127,7 @@ def page(title, description, body, root, preview, path="", fragment=False):
 {share}
 {canonical}
 {icons}
+{ld_html}
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{FONTS}">
 <style>
@@ -423,7 +438,7 @@ def issue_page(issue, issues, preview):
 </div>
 <section class="issue-others"><p class="eyebrow">Other issues</p><ul class="chips">{others}</ul></section>
 </main>"""
-    title = f'{issue["title"]} | {SITE["site_title"]}'
+    title = f'{issue["title"]} in {SITE["suburbs"]} | {SITE["councillor"]}'
     desc = f'{SITE["councillor"]} on {issue["title"].lower()}: what he has said in the Council chamber, with video.'
     return page(title, desc, body, "../", preview, path=f"issues/{issue['slug']}.html")
 
@@ -544,7 +559,7 @@ def ward_page(items, issues, preview):
 </main>
 <script type="application/json" id="ward-data">{safe}</script>
 {WARD_JS}"""
-    title = f'{SITE.get("ward_title", "The ward")} | {SITE["site_title"]}'
+    title = f'{SITE.get("ward_title", "The ward")} map, {SITE["suburbs"]} | {SITE["councillor"]}'
     desc = f'A map of {SITE["ward"]} ({SITE["suburbs"]}) with every place {SITE["councillor"]} has raised in the Knox City Council chamber.'
     html = page(title, desc, body, "", preview, path="ward.html")
     return html.replace("<style>", '<link rel="stylesheet" href="leaflet/leaflet.css">\n<style>', 1)
@@ -651,7 +666,8 @@ def index_page(items, preview, fragment=False, issues=()):
     title = SITE.get("page_title") or f'{SITE["site_title"]} {SITE["tagline"]}'
     desc = (f'{SITE["councillor"]}, {SITE["ward"]} ({SITE["suburbs"]}), {SITE["council"]}: video, summaries and transcripts '
             f'of his monthly reports to Council.')
-    return page(title, desc, body, "", preview, fragment=fragment)
+    ld = {"@context": "https://schema.org", "@graph": [person_ld(), {"@type": "WebSite", "name": title, "url": SITE.get("base_url", "").rstrip("/") + "/"}]}
+    return page(title, desc, body, "", preview, fragment=fragment, ld=ld)
 
 
 def report_page(report, newer, older, preview, issues=()):
@@ -742,8 +758,33 @@ def report_page(report, newer, older, preview, issues=()):
 </div>
 <nav class="pager">{''.join(links)}</nav>
 </main>"""
-    title = f'{report["headline"]} | {SITE["site_title"]}'
-    return page(title, report["summary"], body, "../", preview, path=f"reports/{report['slug']}.html")
+    title = f'{report["headline"]} | {SITE["councillor"]}, {SITE["suburbs"]}'
+    base = SITE.get("base_url", "").rstrip("/")
+    ld = {"@context": "https://schema.org", "@type": "Article", "headline": report["headline"], "description": report["summary"],
+          "datePublished": report["date"], "author": person_ld(), "url": f"{base}/reports/{report['slug']}.html",
+          "about": {"@type": "Place", "name": f"{SITE['ward']}, {SITE['council']}"}}
+    if report.get("image"):
+        ld["image"] = f"{base}/photos/{report['image']}"
+    if report.get("youtube"):
+        ld["video"] = {"@type": "VideoObject", "name": report.get("video_title") or report["headline"], "description": report["summary"],
+                       "uploadDate": report["date"], "thumbnailUrl": f"https://i.ytimg.com/vi/{report['youtube']}/hqdefault.jpg",
+                       "embedUrl": f"https://www.youtube.com/embed/{report['youtube']}"}
+    return page(title, report["summary"], body, "../", preview, path=f"reports/{report['slug']}.html", ld=ld)
+
+
+def sitemap(reports, issues, has_ward):
+    """Every public page, with the date it last changed, for search engines."""
+    base = SITE["base_url"].rstrip("/")
+    latest = max((r["date"] for r in reports), default=dt.date.today().isoformat())
+    urls = [(f"{base}/", latest)]
+    if has_ward:
+        urls.append((f"{base}/ward.html", latest))
+    for issue in issues:
+        dates = [r["date"] for r in issue["pinned"]] + [r["date"] for r, _ in issue["entries"]] or [latest]
+        urls.append((f"{base}/issues/{issue['slug']}.html", max(dates)))
+    urls += [(f"{base}/reports/{r['slug']}.html", r["date"]) for r in reports]
+    body = "".join(f"<url><loc>{e(u)}</loc><lastmod>{d}</lastmod></url>\n" for u, d in urls)
+    return f'<?xml version="1.0" encoding="utf-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{body}</urlset>\n'
 
 
 def feed(reports):
@@ -817,6 +858,8 @@ def main(argv=None):
             report_page(report, newer, older, args.drafts, issues), encoding="utf-8")
     if SITE.get("base_url") and not args.drafts:
         (out / "feed.xml").write_text(feed(reports), encoding="utf-8")
+        (out / "sitemap.xml").write_text(sitemap(reports, issues, (out / "ward.html").exists()), encoding="utf-8")
+        (out / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE['base_url'].rstrip('/')}/sitemap.xml\n", encoding="utf-8")
     print(f"Built {len(reports)} report pages in {out.relative_to(ROOT)}/")
 
 

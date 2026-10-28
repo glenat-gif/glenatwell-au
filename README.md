@@ -78,6 +78,10 @@ The "In the media" list is the `media` section of `site.json`: outlet, date, tit
 
 `places.json` lists the places on the Ward page: each has an `id`, `name`, `lat` and `lng`, `match` patterns (like the issues, matched against transcript paragraphs), the `issues` it belongs to, and a one-line `blurb`. A place is drawn in orange with a popup of the latest thing said about it when any report mentions it, and in grey otherwise. Mark a place `"approx": true` if the pin is a rough position, or `"outside": true` if it lies outside the ward. Pin streets, parks and buildings only, never a resident's house. `static/ward.json` holds the ward boundary (traced from Council's ward map, accurate to roughly 30 metres), and `static/leaflet/` is the map library, served from the site itself. In `site.json`, `ward_title` and `ward_about` (a list of paragraphs) set the words above the map; `ward_history_title`, `ward_history` (paragraphs) and `ward_credit` (a source line) make the section at the foot of the page. Delete `places.json` to remove the Ward page.
 
+## Search engines
+
+Each public build writes `sitemap.xml` and `robots.txt`, and every page carries structured data (the councillor as a Person, each report as an Article with its video) so Google and Bing can read it properly. Page titles end with the suburbs and the councillor's name. To get the site indexed, add it to Google Search Console and Bing Webmaster Tools and submit `https://glenatwell.au/sitemap.xml` once; after that, every new report is picked up from the sitemap. If `site.json` has a `youtube_channel` address it is listed alongside Facebook as one of the councillor's profiles.
+
 ## Motions and other speeches
 
 A speech that is not a monthly report gets its own file in `content/reports/` with a longer name, for example `2025-08-25-nom-184.md`. It works the same way as a report, with a few extra lines at the top:
