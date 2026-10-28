@@ -92,7 +92,7 @@ def person_ld():
     base = SITE.get("base_url", "").rstrip("/")
     d = {"@type": "Person", "name": SITE["councillor"].replace("Cr ", ""), "jobTitle": f"Councillor, {SITE['ward']}",
          "worksFor": {"@type": "GovernmentOrganization", "name": SITE["council"]}, "url": base + "/"}
-    links = [SITE.get(k) for k in ("facebook", "youtube") if SITE.get(k)]
+    links = [SITE.get(k) for k in ("facebook", "youtube_channel") if SITE.get(k)]
     if links:
         d["sameAs"] = links
     return d
